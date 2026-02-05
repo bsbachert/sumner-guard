@@ -1,0 +1,1523 @@
+Downloading Radar...
+Radar updated successfully.
+Capturing Astrospheric...
+Waiting for data layers to render...
+Astrospheric capture complete (Full Page).
+Downloading Radar...
+Radar updated successfully.
+Capturing Astrospheric...
+Waiting for data layers to render...
+Astrospheric capture complete (Full Page).
+Downloading Radar...
+Radar updated successfully.
+Capturing Astrospheric...
+Waiting for data layers to render...
+Astrospheric capture complete (Full Page).
+Downloading Radar...
+Radar updated successfully.
+Capturing Astrospheric...
+Waiting for data layers to render...
+Astrospheric capture complete (Full Page).
+Updated radar.png
+Updated radar.png
+--- Sync Started: 2026-01-24 19:20:01 ---
+  [FAIL] radar.png (HTTP 404)
+         URL tried: https://radar.weather.gov/ridge/lite/KGRR_loop.gif
+  [FAIL] clock_wyoming.png (HTTP 404)
+         URL tried: https://www.cleardarksky.com/c/WyomingMIcsk.png
+  [FAIL] clock_sumner.png (HTTP 404)
+         URL tried: https://www.cleardarksky.com/c/VestaburgMIcsk.png
+--- Syncing Allsky Guard Data: 19:30:02 ---
+  [SUCCESS] radar.png (703224 bytes)
+  [ERROR 404] clock_wyoming.png
+    URL: https://www.cleardarksky.com/c/WyomingMIcsk.png?20263001/24/2619
+  [ERROR 404] clock_sumner.png
+    URL: https://www.cleardarksky.com/c/VestaburgMIcsk.png?20263001/24/2619
+--- Syncing Allsky Guard: 19:40:01 ---
+  [SUCCESS] radar.png (714185 bytes)
+  [ERROR 404] clock_wyoming.png
+  [ERROR 404] clock_sumner.png
+  [SUCCESS] clock_canadian.png (27002 bytes)
+--- Syncing Allsky Guard: 19:50:02 ---
+  [SUCCESS] radar.png (697989 bytes)
+  [ERROR 404] clock_wyoming.png
+  [ERROR 404] clock_sumner.png
+  [SUCCESS] clock_canadian.png (27002 bytes)
+--- Syncing Allsky Guard: 20:00:02 ---
+  [SUCCESS] radar.png (687511 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [ERROR 404] clock_sumner.png
+  [SUCCESS] clock_canadian.png (27002 bytes)
+--- Syncing Allsky Guard: 20:10:01 ---
+  [SUCCESS] radar.png (686629 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 20:20:01 ---
+  [SUCCESS] radar.png (697474 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 20:30:02 ---
+  [SUCCESS] radar.png (715484 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 20:40:01 ---
+  [SUCCESS] radar.png (688038 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 20:50:01 ---
+  [SUCCESS] radar.png (671461 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 21:00:02 ---
+  [SUCCESS] radar.png (674584 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 21:10:02 ---
+  [SUCCESS] radar.png (704192 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 22:10:01 ---
+  [SUCCESS] radar.png (773890 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 22:20:02 ---
+  [SUCCESS] radar.png (783110 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 22:30:02 ---
+  [SUCCESS] radar.png (810153 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 22:40:02 ---
+  [SUCCESS] radar.png (807849 bytes)
+  [SUCCESS] clock_wyoming.png (28265 bytes)
+  [SUCCESS] clock_sumner.png (27002 bytes)
+--- Syncing Allsky Guard: 08:10:02 ---
+  [SUCCESS] radar.png (970162 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 08:20:02 ---
+  [SUCCESS] radar.png (1004356 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 08:30:01 ---
+  [SUCCESS] radar.png (995644 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 08:40:02 ---
+  [SUCCESS] radar.png (989404 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 08:50:02 ---
+  [SUCCESS] radar.png (1000767 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 09:00:01 ---
+  [SUCCESS] radar.png (1022481 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 09:10:02 ---
+  [SUCCESS] radar.png (1047179 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 09:20:02 ---
+  [SUCCESS] radar.png (1034303 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 09:30:01 ---
+  [SUCCESS] radar.png (1001660 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 09:40:01 ---
+  [SUCCESS] radar.png (967087 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 09:50:02 ---
+  [SUCCESS] radar.png (924332 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 10:00:01 ---
+  [SUCCESS] radar.png (922543 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 10:10:01 ---
+  [SUCCESS] radar.png (955459 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 10:20:01 ---
+  [SUCCESS] radar.png (986282 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 10:30:01 ---
+  [SUCCESS] radar.png (974427 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 10:40:01 ---
+  [SUCCESS] radar.png (953544 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 10:50:01 ---
+  [SUCCESS] radar.png (957166 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 11:00:02 ---
+  [SUCCESS] radar.png (959565 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 11:10:01 ---
+  [SUCCESS] radar.png (949493 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 11:20:01 ---
+  [SUCCESS] radar.png (939028 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 11:30:01 ---
+  [SUCCESS] radar.png (913538 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 11:40:01 ---
+  [SUCCESS] radar.png (907586 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 11:50:02 ---
+  [SUCCESS] radar.png (930036 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 12:00:02 ---
+  [SUCCESS] radar.png (940319 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 12:10:01 ---
+  [SUCCESS] radar.png (897789 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 12:20:02 ---
+  [SUCCESS] radar.png (889302 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 12:30:02 ---
+  [SUCCESS] radar.png (910208 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 12:40:02 ---
+  [SUCCESS] radar.png (908480 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 12:50:02 ---
+  [SUCCESS] radar.png (895109 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 13:00:02 ---
+  [SUCCESS] radar.png (872102 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 13:10:02 ---
+  [SUCCESS] radar.png (878029 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 13:20:01 ---
+  [SUCCESS] radar.png (905224 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 13:30:02 ---
+  [SUCCESS] radar.png (920915 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 13:40:01 ---
+  [SUCCESS] radar.png (922636 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 13:50:17 ---
+  [SUCCESS] radar.png (939581 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 14:00:01 ---
+  [SUCCESS] radar.png (952745 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 14:10:01 ---
+  [SUCCESS] radar.png (916330 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 14:20:02 ---
+  [SUCCESS] radar.png (896197 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 14:30:02 ---
+  [SUCCESS] radar.png (957974 bytes)
+  [SUCCESS] clock_wyoming.png (28875 bytes)
+  [SUCCESS] clock_sumner.png (29547 bytes)
+--- Syncing Allsky Guard: 22:10:01 ---
+  [SUCCESS] radar.png (677733 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 22:20:02 ---
+  [SUCCESS] radar.png (685210 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 22:30:02 ---
+  [SUCCESS] radar.png (683765 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 22:40:02 ---
+  [SUCCESS] radar.png (680071 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 22:50:01 ---
+  [SUCCESS] radar.png (680039 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 23:00:02 ---
+  [SUCCESS] radar.png (681971 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 23:10:02 ---
+  [SUCCESS] radar.png (681795 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 23:20:01 ---
+  [SUCCESS] radar.png (685723 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 23:30:01 ---
+  [SUCCESS] radar.png (687516 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 23:40:02 ---
+  [SUCCESS] radar.png (688063 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 23:50:02 ---
+  [SUCCESS] radar.png (684578 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 00:00:01 ---
+  [SUCCESS] radar.png (686300 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 00:10:02 ---
+  [SUCCESS] radar.png (693956 bytes)
+  [SUCCESS] clock_wyoming.png (27364 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 00:20:01 ---
+  [SUCCESS] radar.png (686577 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26632 bytes)
+--- Syncing Allsky Guard: 00:30:02 ---
+  [SUCCESS] radar.png (676335 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 00:40:01 ---
+  [SUCCESS] radar.png (664146 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 00:50:02 ---
+  [SUCCESS] radar.png (645732 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 01:00:01 ---
+  [SUCCESS] radar.png (624896 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 01:10:02 ---
+  [SUCCESS] radar.png (619669 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 01:20:01 ---
+  [SUCCESS] radar.png (601645 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 01:30:02 ---
+  [SUCCESS] radar.png (569838 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 01:40:01 ---
+  [SUCCESS] radar.png (553114 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 01:50:01 ---
+  [SUCCESS] radar.png (538091 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 02:00:02 ---
+  [SUCCESS] radar.png (525836 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 02:10:02 ---
+  [SUCCESS] radar.png (517793 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 02:20:01 ---
+  [SUCCESS] radar.png (522328 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 02:30:02 ---
+  [SUCCESS] radar.png (518308 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 02:40:01 ---
+  [SUCCESS] radar.png (513105 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 02:50:02 ---
+  [SUCCESS] radar.png (507345 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 03:00:01 ---
+  [SUCCESS] radar.png (508057 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 03:10:01 ---
+  [SUCCESS] radar.png (502187 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 03:20:02 ---
+  [SUCCESS] radar.png (494098 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 03:30:01 ---
+  [SUCCESS] radar.png (477093 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 03:40:02 ---
+  [SUCCESS] radar.png (463225 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 03:50:01 ---
+  [SUCCESS] radar.png (463697 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 04:00:02 ---
+  [SUCCESS] radar.png (472872 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 04:10:01 ---
+  [SUCCESS] radar.png (479233 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 04:20:01 ---
+  [SUCCESS] radar.png (470113 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 04:30:01 ---
+  [SUCCESS] radar.png (470467 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 04:40:01 ---
+  [SUCCESS] radar.png (491407 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 04:50:02 ---
+  [SUCCESS] radar.png (513169 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 05:00:01 ---
+  [SUCCESS] radar.png (510549 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 05:10:02 ---
+  [SUCCESS] radar.png (503551 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 05:20:01 ---
+  [SUCCESS] radar.png (510642 bytes)
+  [SUCCESS] clock_wyoming.png (27496 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 05:30:02 ---
+  [SUCCESS] radar.png (0 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (26888 bytes)
+--- Syncing Allsky Guard: 05:40:02 ---
+  [SUCCESS] radar.png (531346 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 05:50:01 ---
+  [SUCCESS] radar.png (531103 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 06:00:01 ---
+  [SUCCESS] radar.png (525897 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 06:10:02 ---
+  [SUCCESS] radar.png (529985 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 06:20:01 ---
+  [SUCCESS] radar.png (543628 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 06:30:02 ---
+  [SUCCESS] radar.png (553803 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 06:40:01 ---
+  [SUCCESS] radar.png (562967 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 06:50:01 ---
+  [SUCCESS] radar.png (569357 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 07:00:01 ---
+  [SUCCESS] radar.png (564004 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 07:10:01 ---
+  [SUCCESS] radar.png (559256 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 07:20:01 ---
+  [SUCCESS] radar.png (561881 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 07:30:03 ---
+  [SUCCESS] radar.png (558327 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 07:40:25 ---
+  [SUCCESS] radar.png (560138 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 07:50:03 ---
+  [SUCCESS] radar.png (585849 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 08:00:02 ---
+  [SUCCESS] radar.png (602792 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 08:10:02 ---
+  [SUCCESS] radar.png (582901 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 08:20:01 ---
+  [SUCCESS] radar.png (566708 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 08:30:02 ---
+  [SUCCESS] radar.png (577192 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 08:40:02 ---
+  [SUCCESS] radar.png (576929 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 08:50:01 ---
+  [SUCCESS] radar.png (571981 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 09:00:02 ---
+  [SUCCESS] radar.png (561607 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 09:10:01 ---
+  [SUCCESS] radar.png (567706 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 09:20:02 ---
+  [SUCCESS] radar.png (575277 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 09:30:01 ---
+  [SUCCESS] radar.png (564481 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 09:40:01 ---
+  [SUCCESS] radar.png (551346 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 09:50:02 ---
+  [SUCCESS] radar.png (545784 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 10:00:02 ---
+  [SUCCESS] radar.png (536926 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 10:10:02 ---
+  [SUCCESS] radar.png (521434 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 10:20:01 ---
+  [SUCCESS] radar.png (517745 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 10:30:02 ---
+  [SUCCESS] radar.png (517616 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 10:40:02 ---
+  [SUCCESS] radar.png (529642 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 10:50:02 ---
+  [SUCCESS] radar.png (546058 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 11:00:01 ---
+  [SUCCESS] radar.png (542891 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 11:10:01 ---
+  [SUCCESS] radar.png (524982 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 11:20:02 ---
+  [SUCCESS] radar.png (520173 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 11:30:01 ---
+  [SUCCESS] radar.png (521284 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 11:40:02 ---
+  [SUCCESS] radar.png (518980 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 11:50:01 ---
+  [SUCCESS] radar.png (506788 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 12:00:01 ---
+  [SUCCESS] radar.png (498481 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 12:10:02 ---
+  [SUCCESS] radar.png (501153 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 12:20:01 ---
+  [SUCCESS] radar.png (505268 bytes)
+  [SUCCESS] clock_wyoming.png (28041 bytes)
+  [SUCCESS] clock_sumner.png (28820 bytes)
+--- Syncing Allsky Guard: 12:30:02 ---
+  [SUCCESS] radar.png (506018 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 12:40:01 ---
+  [SUCCESS] radar.png (502459 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 12:50:01 ---
+  [SUCCESS] radar.png (502914 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 13:00:02 ---
+  [SUCCESS] radar.png (504920 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 13:10:01 ---
+  [SUCCESS] radar.png (509572 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 13:20:01 ---
+  [SUCCESS] radar.png (519440 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 13:30:02 ---
+  [SUCCESS] radar.png (535627 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 13:40:01 ---
+  [SUCCESS] radar.png (558542 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 13:50:02 ---
+  [SUCCESS] radar.png (570673 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 14:00:02 ---
+  [SUCCESS] radar.png (562194 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 14:10:01 ---
+  [SUCCESS] radar.png (557136 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 14:20:01 ---
+  [SUCCESS] radar.png (558755 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 14:30:02 ---
+  [SUCCESS] radar.png (564933 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 14:40:01 ---
+  [SUCCESS] radar.png (578155 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 14:50:02 ---
+  [SUCCESS] radar.png (594382 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 15:00:01 ---
+  [SUCCESS] radar.png (600095 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 15:10:01 ---
+  [SUCCESS] radar.png (611680 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 15:20:02 ---
+  [SUCCESS] radar.png (637918 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 15:30:01 ---
+  [SUCCESS] radar.png (621428 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 15:40:01 ---
+  [SUCCESS] radar.png (612377 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 15:50:01 ---
+  [SUCCESS] radar.png (627049 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 16:00:02 ---
+  [SUCCESS] radar.png (632252 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 16:10:01 ---
+  [SUCCESS] radar.png (643296 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 16:20:02 ---
+  [SUCCESS] radar.png (657100 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 16:30:01 ---
+  [SUCCESS] radar.png (670988 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 16:40:01 ---
+  [SUCCESS] radar.png (694002 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 16:50:02 ---
+  [SUCCESS] radar.png (718062 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 17:00:01 ---
+  [SUCCESS] radar.png (737437 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 17:10:02 ---
+  [SUCCESS] radar.png (756730 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 17:20:01 ---
+  [SUCCESS] radar.png (779932 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 17:30:02 ---
+  [SUCCESS] radar.png (792029 bytes)
+  [SUCCESS] clock_wyoming.png (28922 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 17:40:02 ---
+  [SUCCESS] radar.png (798272 bytes)
+  [SUCCESS] clock_wyoming.png (29052 bytes)
+  [SUCCESS] clock_sumner.png (29228 bytes)
+--- Syncing Allsky Guard: 17:50:01 ---
+  [SUCCESS] radar.png (800934 bytes)
+  [SUCCESS] clock_wyoming.png (29052 bytes)
+  [SUCCESS] clock_sumner.png (29177 bytes)
+--- Syncing Allsky Guard: 18:00:02 ---
+  [SUCCESS] radar.png (806314 bytes)
+  [SUCCESS] clock_wyoming.png (29052 bytes)
+  [SUCCESS] clock_sumner.png (29177 bytes)
+--- Syncing Allsky Guard: 20:10:01 ---
+  [SUCCESS] radar.png (766265 bytes)
+  [SUCCESS] clock_wyoming.png (29052 bytes)
+  [SUCCESS] clock_sumner.png (29177 bytes)
+--- Syncing Allsky Guard: 20:20:01 ---
+  [SUCCESS] radar.png (767669 bytes)
+  [SUCCESS] clock_wyoming.png (29052 bytes)
+  [SUCCESS] clock_sumner.png (29177 bytes)
+--- Syncing Allsky Guard: 20:30:02 ---
+  [SUCCESS] radar.png (809825 bytes)
+  [SUCCESS] clock_wyoming.png (29052 bytes)
+  [SUCCESS] clock_sumner.png (29177 bytes)
+--- Syncing Allsky Guard: 20:40:02 ---
+  [SUCCESS] radar.png (851697 bytes)
+  [SUCCESS] clock_wyoming.png (29052 bytes)
+  [SUCCESS] clock_sumner.png (29177 bytes)
+--- Syncing Allsky Guard: 21:50:02 ---
+  [SUCCESS] radar.png (890076 bytes)
+  [SUCCESS] clock_wyoming.png (29052 bytes)
+  [SUCCESS] clock_sumner.png (29177 bytes)
+--- Syncing Allsky Guard: 22:00:02 ---
+  [SUCCESS] radar.png (896319 bytes)
+  [SUCCESS] clock_wyoming.png (29052 bytes)
+  [SUCCESS] clock_sumner.png (29177 bytes)
+--- Syncing Allsky Guard: 09:30:02 ---
+  [SUCCESS] radar.png (460198 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 09:40:01 ---
+  [SUCCESS] radar.png (483436 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 09:50:01 ---
+  [SUCCESS] radar.png (513569 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 10:00:01 ---
+  [SUCCESS] radar.png (511334 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 10:10:02 ---
+  [SUCCESS] radar.png (504422 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 10:20:01 ---
+  [SUCCESS] radar.png (522453 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 10:40:02 ---
+  [SUCCESS] radar.png (531004 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 10:50:02 ---
+  [SUCCESS] radar.png (527302 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 11:00:01 ---
+  [SUCCESS] radar.png (537089 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 11:20:02 ---
+  [SUCCESS] radar.png (526452 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 11:30:01 ---
+  [SUCCESS] radar.png (534775 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 11:40:02 ---
+  [SUCCESS] radar.png (546504 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 11:50:02 ---
+  [SUCCESS] radar.png (533900 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 12:00:02 ---
+  [SUCCESS] radar.png (507522 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 12:10:01 ---
+  [SUCCESS] radar.png (491038 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 12:20:02 ---
+  [SUCCESS] radar.png (489720 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 12:30:01 ---
+  [SUCCESS] radar.png (485202 bytes)
+  [SUCCESS] clock_wyoming.png (28503 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 12:40:01 ---
+  [SUCCESS] radar.png (475123 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27992 bytes)
+--- Syncing Allsky Guard: 12:50:01 ---
+  [SUCCESS] radar.png (465812 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 13:00:02 ---
+  [SUCCESS] radar.png (462974 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 13:10:01 ---
+  [SUCCESS] radar.png (463906 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 13:20:02 ---
+  [SUCCESS] radar.png (467737 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 13:30:01 ---
+  [SUCCESS] radar.png (461468 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 13:40:01 ---
+  [SUCCESS] radar.png (449422 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 13:50:02 ---
+  [SUCCESS] radar.png (440680 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+                                                                                                                                                                   --- Syncing Allsky Guard: 15:20:01 ---
+  [SUCCESS] radar.png (425808 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 15:30:01 ---
+  [SUCCESS] radar.png (426250 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 15:40:01 ---
+  [SUCCESS] radar.png (430859 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 15:50:01 ---
+  [SUCCESS] radar.png (424949 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 16:00:02 ---
+  [SUCCESS] radar.png (409253 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 16:10:02 ---
+  [SUCCESS] radar.png (404758 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 16:20:02 ---
+  [SUCCESS] radar.png (406422 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 16:30:02 ---
+  [SUCCESS] radar.png (400565 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 16:40:01 ---
+  [SUCCESS] radar.png (394522 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 16:50:01 ---
+  [SUCCESS] radar.png (389513 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 17:00:02 ---
+  [SUCCESS] radar.png (389640 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 17:10:01 ---
+  [SUCCESS] radar.png (383849 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 17:20:02 ---
+  [SUCCESS] radar.png (372215 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 17:30:01 ---
+  [SUCCESS] radar.png (376776 bytes)
+  [SUCCESS] clock_wyoming.png (27693 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 17:40:02 ---
+  [SUCCESS] radar.png (372471 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (27273 bytes)
+--- Syncing Allsky Guard: 17:50:01 ---
+  [SUCCESS] radar.png (368944 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 18:00:02 ---
+  [SUCCESS] radar.png (373817 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 18:10:01 ---
+  [SUCCESS] radar.png (365372 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 18:20:02 ---
+  [SUCCESS] radar.png (359764 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 18:30:02 ---
+  [SUCCESS] radar.png (352767 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 18:40:02 ---
+  [SUCCESS] radar.png (344982 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 18:50:02 ---
+  [SUCCESS] radar.png (341682 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 19:00:02 ---
+  [SUCCESS] radar.png (337099 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 19:10:02 ---
+  [SUCCESS] radar.png (329667 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 19:20:02 ---
+  [SUCCESS] radar.png (337012 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 19:30:01 ---
+  [SUCCESS] radar.png (340888 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 19:40:02 ---
+  [SUCCESS] radar.png (342488 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 19:50:01 ---
+  [SUCCESS] radar.png (336797 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 20:00:02 ---
+  [SUCCESS] radar.png (335839 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 20:10:01 ---
+  [SUCCESS] radar.png (332380 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 20:20:01 ---
+  [SUCCESS] radar.png (336101 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 20:30:01 ---
+  [SUCCESS] radar.png (334952 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 20:40:02 ---
+  [SUCCESS] radar.png (336950 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 20:50:01 ---
+  [SUCCESS] radar.png (333584 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 21:00:02 ---
+  [SUCCESS] radar.png (332015 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 21:10:01 ---
+  [SUCCESS] radar.png (332032 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 21:20:02 ---
+  [SUCCESS] radar.png (332053 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 21:30:02 ---
+  [SUCCESS] radar.png (330268 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 21:40:38 ---
+  [SUCCESS] radar.png (326905 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 21:50:01 ---
+  [SUCCESS] radar.png (332825 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 22:00:01 ---
+  [SUCCESS] radar.png (333643 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 22:10:02 ---
+  [SUCCESS] radar.png (330172 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 22:20:01 ---
+  [SUCCESS] radar.png (332577 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 22:30:02 ---
+  [SUCCESS] radar.png (335758 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 22:40:02 ---
+  [SUCCESS] radar.png (336472 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 22:50:14 ---
+  [SUCCESS] radar.png (336559 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 23:00:01 ---
+  [SUCCESS] radar.png (334739 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 23:10:02 ---
+  [SUCCESS] radar.png (333690 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 23:20:02 ---
+  [SUCCESS] radar.png (332223 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 23:30:02 ---
+  [SUCCESS] radar.png (331200 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 23:40:02 ---
+  [SUCCESS] radar.png (324970 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 23:50:02 ---
+  [SUCCESS] radar.png (323205 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 00:00:01 ---
+  [SUCCESS] radar.png (319517 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 00:10:02 ---
+  [SUCCESS] radar.png (317392 bytes)
+  [SUCCESS] clock_wyoming.png (28892 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 00:20:01 ---
+  [SUCCESS] radar.png (325377 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28925 bytes)
+--- Syncing Allsky Guard: 00:30:02 ---
+  [SUCCESS] radar.png (320680 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 00:40:01 ---
+  [SUCCESS] radar.png (322282 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 00:50:02 ---
+  [SUCCESS] radar.png (322946 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 01:00:02 ---
+  [SUCCESS] radar.png (322915 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 01:10:01 ---
+  [SUCCESS] radar.png (296206 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 01:20:02 ---
+  [SUCCESS] radar.png (294880 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 01:30:01 ---
+  [SUCCESS] radar.png (319732 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 01:40:02 ---
+  [SUCCESS] radar.png (294756 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 01:50:02 ---
+  [SUCCESS] radar.png (294615 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 02:00:01 ---
+  [SUCCESS] radar.png (320717 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 02:10:02 ---
+  [SUCCESS] radar.png (318072 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 02:20:01 ---
+  [SUCCESS] radar.png (312414 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 02:30:02 ---
+  [SUCCESS] radar.png (310183 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 02:40:01 ---
+  [SUCCESS] radar.png (308153 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 02:50:02 ---
+  [SUCCESS] radar.png (318622 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 03:00:01 ---
+  [SUCCESS] radar.png (318903 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 03:10:02 ---
+  [SUCCESS] radar.png (321253 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 03:20:01 ---
+  [SUCCESS] radar.png (320380 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 03:30:01 ---
+  [SUCCESS] radar.png (321173 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 03:40:02 ---
+  [SUCCESS] radar.png (322136 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 03:50:01 ---
+  [SUCCESS] radar.png (322138 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 04:00:02 ---
+  [SUCCESS] radar.png (322505 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 04:10:01 ---
+  [SUCCESS] radar.png (323160 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 04:20:01 ---
+  [SUCCESS] radar.png (315942 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 04:30:02 ---
+  [SUCCESS] radar.png (324960 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 04:40:01 ---
+  [SUCCESS] radar.png (325966 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 04:50:01 ---
+  [SUCCESS] radar.png (324436 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 05:00:01 ---
+  [SUCCESS] radar.png (324700 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 05:10:02 ---
+  [SUCCESS] radar.png (324113 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 05:20:02 ---
+  [SUCCESS] radar.png (322715 bytes)
+  [SUCCESS] clock_wyoming.png (28520 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 05:30:01 ---
+  [SUCCESS] radar.png (322508 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 05:40:02 ---
+  [SUCCESS] radar.png (319648 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (28390 bytes)
+--- Syncing Allsky Guard: 05:50:01 ---
+  [SUCCESS] radar.png (319667 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 06:00:02 ---
+  [SUCCESS] radar.png (321798 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 06:10:01 ---
+  [SUCCESS] radar.png (321199 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 06:20:02 ---
+  [SUCCESS] radar.png (321609 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 06:30:01 ---
+  [SUCCESS] radar.png (321070 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 06:40:02 ---
+  [SUCCESS] radar.png (316747 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 06:50:01 ---
+  [SUCCESS] radar.png (317826 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 07:00:01 ---
+  [SUCCESS] radar.png (320337 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 07:10:02 ---
+  [SUCCESS] radar.png (321465 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 07:20:01 ---
+  [SUCCESS] radar.png (321322 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 07:30:02 ---
+  [SUCCESS] radar.png (321080 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 07:40:01 ---
+  [SUCCESS] radar.png (323933 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 07:50:02 ---
+  [SUCCESS] radar.png (324836 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 08:00:01 ---
+  [SUCCESS] radar.png (324408 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 08:10:01 ---
+  [SUCCESS] radar.png (323881 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 08:20:01 ---
+  [SUCCESS] radar.png (324046 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 08:30:01 ---
+  [SUCCESS] radar.png (323873 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 08:40:01 ---
+  [SUCCESS] radar.png (323740 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 08:50:01 ---
+  [SUCCESS] radar.png (320490 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 09:00:02 ---
+  [SUCCESS] radar.png (320962 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 09:10:01 ---
+  [SUCCESS] radar.png (327254 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 09:20:02 ---
+  [SUCCESS] radar.png (328918 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 09:30:02 ---
+  [SUCCESS] radar.png (331555 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 09:40:01 ---
+  [SUCCESS] radar.png (331142 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 09:50:02 ---
+  [SUCCESS] radar.png (328806 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 10:00:01 ---
+  [SUCCESS] radar.png (329186 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 10:10:01 ---
+  [SUCCESS] radar.png (327493 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 10:20:02 ---
+  [SUCCESS] radar.png (327723 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 10:30:01 ---
+  [SUCCESS] radar.png (329257 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 10:40:02 ---
+  [SUCCESS] radar.png (330823 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 10:50:01 ---
+  [SUCCESS] radar.png (329253 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 11:00:02 ---
+  [SUCCESS] radar.png (327819 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 11:10:01 ---
+  [SUCCESS] radar.png (328749 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 11:20:02 ---
+  [SUCCESS] radar.png (330733 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 11:30:01 ---
+  [SUCCESS] radar.png (331748 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 11:40:02 ---
+  [SUCCESS] radar.png (333297 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 11:50:01 ---
+  [SUCCESS] radar.png (334767 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 12:00:02 ---
+  [SUCCESS] radar.png (334064 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 12:10:02 ---
+  [SUCCESS] radar.png (335387 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 12:20:01 ---
+  [SUCCESS] radar.png (335352 bytes)
+  [SUCCESS] clock_wyoming.png (29212 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 12:30:01 ---
+  [SUCCESS] radar.png (337409 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29008 bytes)
+--- Syncing Allsky Guard: 12:40:02 ---
+  [SUCCESS] radar.png (342541 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 12:50:02 ---
+  [SUCCESS] radar.png (346502 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 13:00:02 ---
+  [SUCCESS] radar.png (348635 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 13:10:01 ---
+  [SUCCESS] radar.png (347977 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 13:20:02 ---
+  [SUCCESS] radar.png (352005 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 13:30:01 ---
+  [SUCCESS] radar.png (355668 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 13:40:01 ---
+  [SUCCESS] radar.png (355454 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 13:50:02 ---
+  [SUCCESS] radar.png (356201 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 14:00:01 ---
+  [SUCCESS] radar.png (355694 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 14:10:02 ---
+  [SUCCESS] radar.png (355685 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 14:20:01 ---
+  [SUCCESS] radar.png (354182 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 14:30:02 ---
+  [SUCCESS] radar.png (355357 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 14:40:01 ---
+  [SUCCESS] radar.png (354939 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 14:50:02 ---
+  [SUCCESS] radar.png (352770 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 15:00:01 ---
+  [SUCCESS] radar.png (351135 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 15:10:13 ---
+  [SUCCESS] radar.png (350005 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 16:00:16 ---
+  [SUCCESS] radar.png (347018 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 16:10:02 ---
+  [SUCCESS] radar.png (340528 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 16:40:01 ---
+  [SUCCESS] radar.png (339618 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 17:00:02 ---
+  [SUCCESS] radar.png (338367 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 17:10:01 ---
+  [SUCCESS] radar.png (337202 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 17:20:02 ---
+  [SUCCESS] radar.png (337213 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 17:30:02 ---
+  [SUCCESS] radar.png (334851 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 17:40:01 ---
+  [SUCCESS] radar.png (332285 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 17:50:02 ---
+  [SUCCESS] radar.png (334369 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 18:00:02 ---
+  [SUCCESS] radar.png (334209 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 18:10:02 ---
+  [SUCCESS] radar.png (333633 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 18:20:02 ---
+  [SUCCESS] radar.png (336477 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 18:30:02 ---
+  [SUCCESS] radar.png (334509 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 18:40:01 ---
+  [SUCCESS] radar.png (337432 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 18:50:01 ---
+  [SUCCESS] radar.png (338280 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 19:00:01 ---
+  [SUCCESS] radar.png (337059 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 19:10:01 ---
+  [SUCCESS] radar.png (342455 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 19:20:01 ---
+  [SUCCESS] radar.png (349739 bytes)
+  [SUCCESS] clock_wyoming.png (28611 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 19:30:02 ---
+  [SUCCESS] radar.png (351371 bytes)
+  [SUCCESS] clock_wyoming.png (29223 bytes)
+  [SUCCESS] clock_sumner.png (29985 bytes)
+--- Syncing Allsky Guard: 19:40:02 ---
+  [SUCCESS] radar.png (352705 bytes)
+  [SUCCESS] clock_wyoming.png (29223 bytes)
+  [SUCCESS] clock_sumner.png (29864 bytes)
+--- Syncing Allsky Guard: 19:50:01 ---
+  [FAILED] radar.png: HTTPSConnectionPool(host='radar.weather.gov', port=443): Max retries exceeded with url: /ridge/standard/KGRR_loop.gif (Caused by NameResolutionError("HTTPSConnection(host='radar.weather.gov', port=443): Failed to resolve 'radar.weather.gov' ([Errno -3] Temporary failure in name resolution)"))
+  [FAILED] clock_wyoming.png: HTTPSConnectionPool(host='www.cleardarksky.com', port=443): Max retries exceeded with url: /c/HwkHlObMIcsk.gif (Caused by NameResolutionError("HTTPSConnection(host='www.cleardarksky.com', port=443): Failed to resolve 'www.cleardarksky.com' ([Errno -3] Temporary failure in name resolution)"))
+  [FAILED] clock_sumner.png: HTTPSConnectionPool(host='www.cleardarksky.com', port=443): Max retries exceeded with url: /c/CdnLkMIcsk.gif (Caused by NameResolutionError("HTTPSConnection(host='www.cleardarksky.com', port=443): Failed to resolve 'www.cleardarksky.com' ([Errno -3] Temporary failure in name resolution)"))
+--- Syncing Allsky Guard: 19:50:02 ---
+  [FAILED] radar.png: HTTPSConnectionPool(host='radar.weather.gov', port=443): Max retries exceeded with url: /ridge/standard/KGRR_loop.gif (Caused by NameResolutionError("HTTPSConnection(host='radar.weather.gov', port=443): Failed to resolve 'radar.weather.gov' ([Errno -3] Temporary failure in name resolution)"))
+  [FAILED] clock_wyoming.png: HTTPSConnectionPool(host='www.cleardarksky.com', port=443): Max retries exceeded with url: /c/HwkHlObMIcsk.gif (Caused by NameResolutionError("HTTPSConnection(host='www.cleardarksky.com', port=443): Failed to resolve 'www.cleardarksky.com' ([Errno -3] Temporary failure in name resolution)"))
+  [FAILED] clock_sumner.png: HTTPSConnectionPool(host='www.cleardarksky.com', port=443): Max retries exceeded with url: /c/CdnLkMIcsk.gif (Caused by NameResolutionError("HTTPSConnection(host='www.cleardarksky.com', port=443): Failed to resolve 'www.cleardarksky.com' ([Errno -3] Temporary failure in name resolution)"))
+--- Syncing Allsky Guard: 20:00:01 ---
+  [FAILED] radar.png: HTTPSConnectionPool(host='radar.weather.gov', port=443): Max retries exceeded with url: /ridge/standard/KGRR_loop.gif (Caused by NameResolutionError("HTTPSConnection(host='radar.weather.gov', port=443): Failed to resolve 'radar.weather.gov' ([Errno -3] Temporary failure in name resolution)"))
+  [FAILED] clock_wyoming.png: HTTPSConnectionPool(host='www.cleardarksky.com', port=443): Max retries exceeded with url: /c/HwkHlObMIcsk.gif (Caused by NameResolutionError("HTTPSConnection(host='www.cleardarksky.com', port=443): Failed to resolve 'www.cleardarksky.com' ([Errno -3] Temporary failure in name resolution)"))
+  [FAILED] clock_sumner.png: HTTPSConnectionPool(host='www.cleardarksky.com', port=443): Max retries exceeded with url: /c/CdnLkMIcsk.gif (Caused by NameResolutionError("HTTPSConnection(host='www.cleardarksky.com', port=443): Failed to resolve 'www.cleardarksky.com' ([Errno -3] Temporary failure in name resolution)"))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      

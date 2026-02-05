@@ -1,0 +1,33 @@
+[ OBSERVATORY DOSSIER ]
+Last Service: NEVER
+----------------
+
+---- SYSTEM ARCHITECTURE (2026 SSD BUILD) ---
+Owner: Sumner Observatory
+Hardware: Raspberry Pi 5 / NVMe SSD
+Software: Sumner Guard v6.0 + indi-allsky
+
+--- GPIO & SENSOR MAP ---
+- I2C (Bus 1): BME280 (Temp/Hum) & MLX90614 (Sky IR)
+- GPIO 17: Roof Position (Open/Closed)
+- GPIO 27: RG-11 Rain Sensor (Pulse)
+- GPIO 04: Anemometer (Wind Speed Pulse)
+
+--- FILE DIRECTORY ---
+- Main Folder: /home/pi/allsky_guard/
+- HUD Script: hud.py
+- Background Monitor: master_monitor.py
+- Sync Script: get_radar.py
+- Data Bridge: sensors.txt (Shared with indi-allsky)
+
+--- OPERATIONAL CONSTANTS ---
+- Maintenance Alert: Triggered at 1,000 Operating Hours
+- Sync Frequency: Every 15 minutes (Radar & Clocks)
+- Sampling Rate: 5 seconds (Weather Sensors)
+- Locations: Hawks Hollow (WY) & Canadian Lakes (SM)
+
+--- BACKGROUND SERVICES ---
+- sumner_monitor.service (Sensors)
+- sumner_sync.timer (Radar/Clocks)
+
+
