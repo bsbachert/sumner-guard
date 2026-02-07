@@ -1,8 +1,16 @@
 import tkinter as tk
 from tkinter import messagebox, scrolledtext
 from PIL import Image, ImageTk
-import os, subprocess, random, math
+import os, subprocess, random, math, sys, fcntl
 from datetime import datetime
+
+# --- SINGLE INSTANCE SHIELD ---
+try:
+    lock_file = open('/tmp/sumner_hud.lock', 'w')
+    fcntl.lockf(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+except:
+    # If the HUD is already running, or the lock is stuck, this exits silently
+    sys.exit(0)
 
 class SumnerHUD:
     def __init__(self, root):
@@ -46,18 +54,30 @@ class SumnerHUD:
             self.canvas.create_oval(x, y, x+1, y+1, fill='white', outline='white')
 
     def create_ui_elements(self):
-        # 1. Launcher Tabs
-        self.canvas.create_text(self.sw//2, 25, text="--- SEESTAR START ---", fill="#FFCC00", font=("Arial", 12, "bold"))
-        tk.Button(self.root, text="🚀 INDIGO MANAGER", bg="#003300", fg="white", font=("Arial", 9, "bold"),
-                  command=lambda: subprocess.Popen(["gio", "launch", self.app_manager])).place(x=self.sw//2 - 160, y=45)
-        tk.Button(self.root, text="🔭 AIN IMAGER", bg="#001133", fg="white", font=("Arial", 9, "bold"),
-                  command=lambda: subprocess.Popen(["gio", "launch", self.app_imager])).place(x=self.sw//2 + 20, y=45)
+        self.canvas.create_text(self.sw//2, 25, text="--- OBSERVATORY CONTROLS ---", fill="#FFCC00", font=("Arial", 12, "bold"))
+        
+        # Launcher Buttons
+        tk.Button(self.root, text="🚀 INDIGO", bg="#003300", fg="white", font=("Arial", 9, "bold"),
+                  command=lambda: subprocess.Popen(["gio", "launch", self.app_manager])).place(x=self.sw//2 - 210, y=45)
+        
+        # Imager
+        tk.Button(self.root, text="🔭 IMAGER", bg="#001133", fg="white", font=("Arial", 9, "bold"),
+                  command=lambda: subprocess.Popen(["gio", "launch", self.app_imager])).place(x=self.sw//2 - 80, y=45)
 
-        # 2. Controls
+        # Seestar V40 Mirror - Re-stabilized for Full HD
+        tk.Button(self.root, text="📱 SEESTAR (V40)", bg="#4B0082", fg="white", font=("Arial", 9, "bold"),
+                  command=lambda: subprocess.Popen([
+                      "/snap/bin/scrcpy", 
+                      "--always-on-top", 
+                      "--stay-awake", 
+                      "--window-title", "Seestar Live",
+                      "--max-size", "1920"
+                  ])).place(x=self.sw//2 + 50, y=45)
+
         tk.Button(self.root, text="MAINT / DOSSIER", command=self.open_dossier, bg="#222", fg="white", font=("Arial", 9, "bold")).place(x=20, y=20)
         tk.Button(self.root, text="EXIT HUD", command=self.root.destroy, bg="#500", fg="white", font=("Arial", 9, "bold")).place(x=150, y=20)
 
-        # 3. Sensor Display Box (Strictly 390x620)
+        # Sensor Box
         box_w, box_h = 390, 620
         rx, ry = self.sw - box_w - 30, 40
         self.canvas.create_rectangle(rx, ry, rx + box_w, ry + box_h, fill='#050505', outline='#00FFCC', width=3)
@@ -73,11 +93,8 @@ class SumnerHUD:
         self.val_rain  = self.add_sensor_line("☔", "RAIN DET:", rx + 20, y_off + spacing*7, "#AF7AC5")
         self.val_dome  = self.add_sensor_line("🏠", "ROOF STAT:", rx + 20, y_off + spacing*8, "#EB984E")
         self.val_hrs   = self.add_sensor_line("⌛", "OP HOURS:", rx + 20, y_off + spacing*9.4, "#FFCC00")
-
-        # Sync Indicator Light (Small circle next to Op Hours)
         self.sync_light = self.canvas.create_oval(rx + 20, y_off + spacing*9.4 - 8, rx + 36, y_off + spacing*9.4 + 8, fill="gray", outline="white")
 
-        # 4. Images (Zoom tags restored)
         self.all_img_id = self.canvas.create_image(self.sw*0.25, self.sh*0.4, anchor='center', tags="zoom")
         self.rad_img_id = self.canvas.create_image(self.sw*0.58, self.sh*0.4, anchor='center', tags="zoom")
         self.clk_img_id = self.canvas.create_image(self.sw*0.42, self.sh*0.82, anchor='center', tags="zoom")
@@ -103,7 +120,8 @@ class SumnerHUD:
             scale_w = int(float(img.size[0]) * float(w_ratio))
             img = img.resize((scale_w, scale_h), Image.Resampling.LANCZOS)
         else:
-            img.thumbnail((self.sw, self.sh), Image.Resampling.LANCZOS)
+            # REDUCED POP-OUT SIZE BY 10% (0.9 scale)
+            img.thumbnail((int(self.sw * 0.9), int(self.sh * 0.9)), Image.Resampling.LANCZOS)
         self.p_img = ImageTk.PhotoImage(img)
         tk.Button(pop, image=self.p_img, bg='black', bd=0, activebackground='black', command=pop.destroy).pack(expand=True)
 
@@ -127,7 +145,6 @@ class SumnerHUD:
                   command=lambda: [open(self.path_notes, 'w').write(txt.get('1.0', 'end')), d_win.destroy()]).pack(side="right", padx=50)
 
     def update_loop(self):
-        # Refresh Images
         self.img_all = self.load_scale(self.path_allsky, 650, 480)
         if self.img_all: self.canvas.itemconfig(self.all_img_id, image=self.img_all)
         self.img_rad = self.load_scale(self.path_radar, 650, 480)
@@ -135,19 +152,15 @@ class SumnerHUD:
         self.img_clk = self.load_scale(self.path_clock, 1100, 400)
         if self.img_clk: self.canvas.itemconfig(self.clk_img_id, image=self.img_clk)
 
-        # Update Op Hours & Watchdog Sync Light
         if os.path.exists(self.path_hours):
             try:
                 mtime = os.path.getmtime(self.path_hours)
                 diff = (datetime.now().timestamp() - mtime) / 60
-                # Green if updated in last 20 mins, Red if stalled
                 self.canvas.itemconfig(self.sync_light, fill="#00FF00" if diff < 20 else "#FF0000")
-                
                 with open(self.path_hours, "r") as f:
                     self.canvas.itemconfig(self.val_hrs, text=f"{f.read().strip()} HRS")
             except: pass
 
-        # Update Sensors
         if os.path.exists(self.path_sensors):
             try:
                 sky_t, amb_t, hum_val = None, None, None
