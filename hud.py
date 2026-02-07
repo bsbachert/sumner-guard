@@ -9,7 +9,6 @@ try:
     lock_file = open('/tmp/sumner_hud.lock', 'w')
     fcntl.lockf(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
 except:
-    # If the HUD is already running, or the lock is stuck, this exits silently
     sys.exit(0)
 
 class SumnerHUD:
@@ -27,6 +26,7 @@ class SumnerHUD:
         self.path_sensors = "/home/pi/allsky_guard/sensors.txt"
         self.path_hours = "/home/pi/allsky_guard/hours.txt"
         self.path_notes = "/home/pi/allsky_guard/dossier.txt"
+        self.path_mirror_cfg = "/home/pi/allsky_guard/mirror_config.txt"
         
         self.app_manager = "/usr/share/applications/indigo-server-manager.desktop"
         self.app_imager = "/usr/share/applications/ain-imager.desktop"
@@ -38,6 +38,32 @@ class SumnerHUD:
         self.create_ui_elements()
         self.check_cleaning_reminder()
         self.update_loop()
+
+    def launch_seestar(self):
+        """Loads saved dimensions and launches scrcpy at 1080p/30fps."""
+        w, h, x, y = "450", "900", "100", "100"
+        
+        if os.path.exists(self.path_mirror_cfg):
+            try:
+                with open(self.path_mirror_cfg, "r") as f:
+                    coords = f.read().strip().split(',')
+                    if len(coords) == 4:
+                        w, h, x, y = coords
+            except: pass
+
+        cmd = [
+            "/snap/bin/scrcpy",
+            "--always-on-top",
+            "--window-title", "Seestar Live",
+            "--max-size", "1920",      # Back to 1080p
+            "--video-bit-rate", "4M",   # Balanced bitrate
+            "--max-fps", "30",          # Capped FPS for stability
+            "--window-x", x,
+            "--window-y", y,
+            "--window-width", w,
+            "--window-height", h
+        ]
+        subprocess.Popen(cmd)
 
     def check_cleaning_reminder(self):
         if os.path.exists(self.path_hours):
@@ -56,23 +82,14 @@ class SumnerHUD:
     def create_ui_elements(self):
         self.canvas.create_text(self.sw//2, 25, text="--- OBSERVATORY CONTROLS ---", fill="#FFCC00", font=("Arial", 12, "bold"))
         
-        # Launcher Buttons
         tk.Button(self.root, text="🚀 INDIGO", bg="#003300", fg="white", font=("Arial", 9, "bold"),
                   command=lambda: subprocess.Popen(["gio", "launch", self.app_manager])).place(x=self.sw//2 - 210, y=45)
         
-        # Imager
         tk.Button(self.root, text="🔭 IMAGER", bg="#001133", fg="white", font=("Arial", 9, "bold"),
                   command=lambda: subprocess.Popen(["gio", "launch", self.app_imager])).place(x=self.sw//2 - 80, y=45)
 
-        # Seestar V40 Mirror - Re-stabilized for Full HD
         tk.Button(self.root, text="📱 SEESTAR (V40)", bg="#4B0082", fg="white", font=("Arial", 9, "bold"),
-                  command=lambda: subprocess.Popen([
-                      "/snap/bin/scrcpy", 
-                      "--always-on-top", 
-                      "--stay-awake", 
-                      "--window-title", "Seestar Live",
-                      "--max-size", "1920"
-                  ])).place(x=self.sw//2 + 50, y=45)
+                  command=self.launch_seestar).place(x=self.sw//2 + 50, y=45)
 
         tk.Button(self.root, text="MAINT / DOSSIER", command=self.open_dossier, bg="#222", fg="white", font=("Arial", 9, "bold")).place(x=20, y=20)
         tk.Button(self.root, text="EXIT HUD", command=self.root.destroy, bg="#500", fg="white", font=("Arial", 9, "bold")).place(x=150, y=20)
@@ -120,7 +137,6 @@ class SumnerHUD:
             scale_w = int(float(img.size[0]) * float(w_ratio))
             img = img.resize((scale_w, scale_h), Image.Resampling.LANCZOS)
         else:
-            # REDUCED POP-OUT SIZE BY 10% (0.9 scale)
             img.thumbnail((int(self.sw * 0.9), int(self.sh * 0.9)), Image.Resampling.LANCZOS)
         self.p_img = ImageTk.PhotoImage(img)
         tk.Button(pop, image=self.p_img, bg='black', bd=0, activebackground='black', command=pop.destroy).pack(expand=True)
@@ -131,18 +147,29 @@ class SumnerHUD:
         d_win.config(bg="#050505")
         d_win.attributes("-topmost", True)
         tk.Label(d_win, text="SYSTEM DOSSIER", bg="#050505", fg="#FFCC00", font=("Arial", 18, "bold")).pack(pady=10)
+        
+        m_frame = tk.Frame(d_win, bg="#111")
+        m_frame.pack(fill="x", padx=20)
+        tk.Label(m_frame, text="Mirror Config (W,H,X,Y):", bg="#111", fg="white").pack(side="left")
+        cfg_entry = tk.Entry(m_frame, bg="black", fg="cyan", insertbackground="white")
+        cfg_entry.pack(side="left", padx=10)
+        if os.path.exists(self.path_mirror_cfg):
+            with open(self.path_mirror_cfg, "r") as f: cfg_entry.insert(0, f.read().strip())
+
         txt = scrolledtext.ScrolledText(d_win, bg="black", fg="#00FFCC", font=("Courier", 14), insertbackground="white")
         txt.pack(padx=20, pady=5, expand=True, fill='both')
         if os.path.exists(self.path_notes):
             with open(self.path_notes, "r") as f: txt.insert('1.0', f.read())
+        
         btn_f = tk.Frame(d_win, bg="#050505")
         btn_f.pack(fill="x", side="bottom", pady=20)
-        def reset_h():
-            if messagebox.askyesno("RESET", "Reset maintenance timer?"):
-                with open(self.path_hours, "w") as f: f.write("0.0")
-        tk.Button(btn_f, text="♻ RESET TIMER", bg="#D4AC0D", font=("Arial", 11, "bold"), command=reset_h).pack(side="left", padx=50)
-        tk.Button(btn_f, text="💾 SAVE & EXIT", bg="#1E8449", fg="white", font=("Arial", 11, "bold"),
-                  command=lambda: [open(self.path_notes, 'w').write(txt.get('1.0', 'end')), d_win.destroy()]).pack(side="right", padx=50)
+        
+        def save_all():
+            with open(self.path_mirror_cfg, "w") as f: f.write(cfg_entry.get())
+            with open(self.path_notes, 'w') as f: f.write(txt.get('1.0', 'end'))
+            d_win.destroy()
+
+        tk.Button(btn_f, text="💾 SAVE & EXIT", bg="#1E8449", fg="white", font=("Arial", 11, "bold"), command=save_all).pack(side="right", padx=50)
 
     def update_loop(self):
         self.img_all = self.load_scale(self.path_allsky, 650, 480)
