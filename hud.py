@@ -224,7 +224,8 @@ class SumnerHUD:
 
                 if sky_t is not None and amb_t is not None:
                     delta = amb_t - sky_t
-                    status = "CLEAR" if delta > 15 else "CLOUDY"
+                    # TWEAK: Increased threshold to 30 for narrow FOV BCC sensor
+                    status = "CLEAR" if delta > 30 else "CLOUDY"
                     self.canvas.itemconfig(self.val_cloud, text=status, fill="lightgreen" if status == "CLEAR" else "orange")
                 
                 if amb_t is not None and hum_val is not None:
