@@ -27,12 +27,18 @@ class SumnerHUD:
         self.path_hours = "/home/pi/allsky_guard/hours.txt"
         self.path_notes = "/home/pi/allsky_guard/dossier.txt"
         self.path_mirror_cfg = "/home/pi/allsky_guard/mirror_config.txt"
+        self.path_thresh = "/home/pi/allsky_guard/cloud_threshold.txt"
         
         self.app_manager = "/usr/share/applications/indigo-server-manager.desktop"
         self.app_imager = "/usr/share/applications/ain-imager.desktop"
 
-        # Cloud Sensitivity State
+        # --- LOAD SAVED SENSITIVITY ---
         self.cloud_threshold = 30.0
+        if os.path.exists(self.path_thresh):
+            try:
+                with open(self.path_thresh, "r") as f:
+                    self.cloud_threshold = float(f.read().strip())
+            except: pass
 
         self.canvas = tk.Canvas(root, width=self.sw, height=self.sh, bg='black', highlightthickness=0)
         self.canvas.pack()
@@ -44,11 +50,14 @@ class SumnerHUD:
 
     def update_threshold(self, val):
         self.cloud_threshold = float(val)
+        try:
+            with open(self.path_thresh, "w") as f:
+                f.write(str(self.cloud_threshold))
+        except: pass
 
     def toggle_roof(self):
-        # Placeholder for MOSFET GPIO trigger
-        print("Roof Toggle Command Sent")
-        messagebox.showinfo("ROOF CONTROL", "Roof Command Triggered")
+        print("Roof Toggle Triggered")
+        messagebox.showinfo("ROOF CONTROL", "Roof Command Sent")
 
     def launch_seestar(self):
         w, h, x, y = "450", "900", "100", "100"
@@ -63,37 +72,26 @@ class SumnerHUD:
                "--window-x", x, "--window-y", y, "--window-width", w, "--window-height", h])
 
     def create_ui_elements(self):
-        # Background Header
         self.canvas.create_text(self.sw//2, 25, text="--- OBSERVATORY CONTROLS ---", fill="#FFCC00", font=("Arial", 12, "bold"))
         
-        # Standard Buttons
-        tk.Button(self.root, text="🚀 INDIGO", bg="#003300", fg="white", font=("Arial", 9, "bold"),
-                  command=lambda: subprocess.Popen(["gio", "launch", self.app_manager])).place(x=self.sw//2 - 210, y=45)
-        tk.Button(self.root, text="🔭 IMAGER", bg="#001133", fg="white", font=("Arial", 9, "bold"),
-                  command=lambda: subprocess.Popen(["gio", "launch", self.app_imager])).place(x=self.sw//2 - 80, y=45)
-        tk.Button(self.root, text="📱 SEESTAR (V40)", bg="#4B0082", fg="white", font=("Arial", 9, "bold"),
-                  command=self.launch_seestar).place(x=self.sw//2 + 50, y=45)
+        tk.Button(self.root, text="🚀 INDIGO", bg="#003300", fg="white", font=("Arial", 9, "bold"), command=lambda: subprocess.Popen(["gio", "launch", self.app_manager])).place(x=self.sw//2 - 210, y=45)
+        tk.Button(self.root, text="🔭 IMAGER", bg="#001133", fg="white", font=("Arial", 9, "bold"), command=lambda: subprocess.Popen(["gio", "launch", self.app_imager])).place(x=self.sw//2 - 80, y=45)
+        tk.Button(self.root, text="📱 SEESTAR (V40)", bg="#4B0082", fg="white", font=("Arial", 9, "bold"), command=self.launch_seestar).place(x=self.sw//2 + 50, y=45)
         tk.Button(self.root, text="MAINT / DOSSIER", command=self.open_dossier, bg="#222", fg="white", font=("Arial", 9, "bold")).place(x=20, y=20)
         tk.Button(self.root, text="EXIT HUD", command=self.root.destroy, bg="#500", fg="white", font=("Arial", 9, "bold")).place(x=150, y=20)
 
-        # Sensor Box Layout
         box_w, box_h = int(self.sw * 0.25), int(self.sh * 0.85)
         rx, ry = self.sw - box_w - 20, 40
         self.canvas.create_rectangle(rx, ry, rx + box_w, ry + box_h, fill='#050505', outline='#00FFCC', width=3)
         
         y_off, spacing = ry + 45, box_h // 12.5
-        
         self.val_sky   = self.add_sensor_line("🌡️", "SKY TEMP:", rx + 15, y_off, "#AAB7B8", box_w)
         self.val_cloud = self.add_sensor_line("☁️", "SKY COND:", rx + 15, y_off + spacing, "#5DADE2", box_w)
         
-        # SLIDER - Under Sky Cond
-        self.slider = tk.Scale(self.root, from_=5, to=60, orient='horizontal', bg='#050505', fg='white', 
-                               troughcolor='#500', activebackground='red', highlightthickness=0, 
-                               font=("Arial", 8), command=self.update_threshold)
+        self.slider = tk.Scale(self.root, from_=5, to=60, orient='horizontal', bg='#050505', fg='white', troughcolor='#500', activebackground='red', highlightthickness=0, font=("Arial", 8), command=self.update_threshold)
         self.slider.set(self.cloud_threshold)
         self.slider.place(x=rx + 55, y=y_off + spacing + 18, width=box_w - 80)
 
-        # Shifted Sensors
         y_mid = y_off + (spacing * 2.8)
         self.val_amb   = self.add_sensor_line("🌡️", "AMB TEMP:", rx + 15, y_mid, "#EC7063", box_w)
         self.val_hum   = self.add_sensor_line("💧", "HUMIDITY:", rx + 15, y_mid + spacing, "#5499C7", box_w)
@@ -103,22 +101,18 @@ class SumnerHUD:
         self.val_rain  = self.add_sensor_line("☔", "RAIN DET:", rx + 15, y_mid + spacing*5, "#AF7AC5", box_w)
         self.val_dome  = self.add_sensor_line("🏠", "ROOF STAT:", rx + 15, y_mid + spacing*6, "#EB984E", box_w)
         
-        # ROOF BUTTON - Under Roof Stat
-        self.roof_btn = tk.Button(self.root, text="OPEN / CLOSE ROOF", bg="#500", fg="white", 
-                                  activebackground="red", font=("Arial", 8, "bold"), command=self.toggle_roof)
+        self.roof_btn = tk.Button(self.root, text="OPEN / CLOSE ROOF", bg="#500", fg="white", activebackground="red", font=("Arial", 8, "bold"), command=self.toggle_roof)
         self.roof_btn.place(x=rx + 55, y=y_mid + spacing*6 + 22, width=box_w - 80)
 
-        # Maintenance Info
+        # RESTORED OP HOURS POSITION
         y_bot = y_mid + spacing*8
         self.val_hrs   = self.add_sensor_line("⌛", "OP HOURS:", rx + 15, y_bot, "#FFCC00", box_w)
         self.sync_light = self.canvas.create_oval(rx + 15, y_bot - 8, rx + 31, y_bot + 8, fill="gray", outline="white")
 
-        # Image Displays
         self.all_img_id = self.canvas.create_image(self.sw*0.22, self.sh*0.4, anchor='center', tags="zoom")
         self.rad_img_id = self.canvas.create_image(self.sw*0.53, self.sh*0.4, anchor='center', tags="zoom")
         self.clk_img_id = self.canvas.create_image(self.sw*0.38, self.sh*0.82, anchor='center', tags="zoom")
 
-        # Popout Bindings
         self.canvas.tag_bind(self.all_img_id, "<Button-1>", lambda e: self.popout(self.path_allsky))
         self.canvas.tag_bind(self.rad_img_id, "<Button-1>", lambda e: self.popout(self.path_radar))
         self.canvas.tag_bind(self.clk_img_id, "<Button-1>", lambda e: self.popout(self.path_clock))
@@ -170,6 +164,7 @@ class SumnerHUD:
             with open(self.path_notes, 'w') as f: f.write(txt.get('1.0', 'end'))
             d_win.destroy()
 
+        # RESTORED RESET BUTTON
         def reset_hrs():
             if messagebox.askyesno("RESET", "Reset Maintenance Timer to 0?"):
                 with open(self.path_hours, "w") as f: f.write("0.0")
@@ -211,6 +206,7 @@ class SumnerHUD:
         self.img_clk = self.load_scale(self.path_clock, int(self.sw*0.5), int(self.sh*0.35))
         if self.img_clk: self.canvas.itemconfig(self.clk_img_id, image=self.img_clk)
 
+        # RESTORED HOURS/SYNC LOGIC
         if os.path.exists(self.path_hours):
             try:
                 mtime = os.path.getmtime(self.path_hours)
@@ -246,8 +242,7 @@ class SumnerHUD:
                                 raw_p = float(''.join(c for c in val if c in '0123456789.-'))
                                 inches_p = raw_p * 0.02953
                                 self.canvas.itemconfig(self.val_pres, text=f"{inches_p:.2f} in")
-                            except:
-                                self.canvas.itemconfig(self.val_pres, text=val)
+                            except: self.canvas.itemconfig(self.val_pres, text=val)
                         elif "WIND SPD" in u_line: self.canvas.itemconfig(self.val_wind, text=val)
                         elif "PRECIP" in u_line or "RAIN" in u_line: 
                             self.canvas.itemconfig(self.val_rain, text=val, fill="red" if "WET" in val.upper() else "cyan")
