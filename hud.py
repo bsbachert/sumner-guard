@@ -31,6 +31,9 @@ class SumnerHUD:
         self.app_manager = "/usr/share/applications/indigo-server-manager.desktop"
         self.app_imager = "/usr/share/applications/ain-imager.desktop"
 
+        # Cloud Sensitivity State
+        self.cloud_threshold = 30.0
+
         self.canvas = tk.Canvas(root, width=self.sw, height=self.sh, bg='black', highlightthickness=0)
         self.canvas.pack()
         
@@ -38,6 +41,14 @@ class SumnerHUD:
         self.create_ui_elements()
         self.check_cleaning_reminder()
         self.update_loop()
+
+    def update_threshold(self, val):
+        self.cloud_threshold = float(val)
+
+    def toggle_roof(self):
+        # Placeholder for MOSFET GPIO trigger
+        print("Roof Toggle Command Sent")
+        messagebox.showinfo("ROOF CONTROL", "Roof Command Triggered")
 
     def launch_seestar(self):
         w, h, x, y = "450", "900", "100", "100"
@@ -47,66 +58,67 @@ class SumnerHUD:
                     coords = f.read().strip().split(',')
                     if len(coords) == 4: w, h, x, y = coords
             except: pass
-
-        cmd = ["/snap/bin/scrcpy", "--always-on-top", "--window-title", "Seestar Live",
+        subprocess.Popen(["/snap/bin/scrcpy", "--always-on-top", "--window-title", "Seestar Live",
                "--max-size", "1920", "--video-bit-rate", "4M", "--max-fps", "30",
-               "--window-x", x, "--window-y", y, "--window-width", w, "--window-height", h]
-        subprocess.Popen(cmd)
-
-    def check_cleaning_reminder(self):
-        if os.path.exists(self.path_hours):
-            try:
-                with open(self.path_hours, "r") as f:
-                    hrs = float(f.read().strip())
-                    if hrs >= 1000.0:
-                        messagebox.showwarning("MAINTENANCE", f"Alert: {hrs:.1f} Hours.\nClean dome/sensors.")
-            except: pass
-
-    def draw_stars(self):
-        for _ in range(60):
-            x, y = random.randint(0, self.sw), random.randint(0, self.sh)
-            self.canvas.create_oval(x, y, x+1, y+1, fill='white', outline='white')
+               "--window-x", x, "--window-y", y, "--window-width", w, "--window-height", h])
 
     def create_ui_elements(self):
+        # Background Header
         self.canvas.create_text(self.sw//2, 25, text="--- OBSERVATORY CONTROLS ---", fill="#FFCC00", font=("Arial", 12, "bold"))
         
+        # Standard Buttons
         tk.Button(self.root, text="🚀 INDIGO", bg="#003300", fg="white", font=("Arial", 9, "bold"),
                   command=lambda: subprocess.Popen(["gio", "launch", self.app_manager])).place(x=self.sw//2 - 210, y=45)
-        
         tk.Button(self.root, text="🔭 IMAGER", bg="#001133", fg="white", font=("Arial", 9, "bold"),
                   command=lambda: subprocess.Popen(["gio", "launch", self.app_imager])).place(x=self.sw//2 - 80, y=45)
-
         tk.Button(self.root, text="📱 SEESTAR (V40)", bg="#4B0082", fg="white", font=("Arial", 9, "bold"),
                   command=self.launch_seestar).place(x=self.sw//2 + 50, y=45)
-
         tk.Button(self.root, text="MAINT / DOSSIER", command=self.open_dossier, bg="#222", fg="white", font=("Arial", 9, "bold")).place(x=20, y=20)
         tk.Button(self.root, text="EXIT HUD", command=self.root.destroy, bg="#500", fg="white", font=("Arial", 9, "bold")).place(x=150, y=20)
 
-        # Sensor Box
-        box_w = int(self.sw * 0.25)
-        box_h = int(self.sh * 0.85)
+        # Sensor Box Layout
+        box_w, box_h = int(self.sw * 0.25), int(self.sh * 0.85)
         rx, ry = self.sw - box_w - 20, 40
         self.canvas.create_rectangle(rx, ry, rx + box_w, ry + box_h, fill='#050505', outline='#00FFCC', width=3)
         
-        y_off = ry + 50
-        spacing = box_h // 11
+        y_off, spacing = ry + 45, box_h // 12.5
+        
         self.val_sky   = self.add_sensor_line("🌡️", "SKY TEMP:", rx + 15, y_off, "#AAB7B8", box_w)
         self.val_cloud = self.add_sensor_line("☁️", "SKY COND:", rx + 15, y_off + spacing, "#5DADE2", box_w)
-        self.val_amb   = self.add_sensor_line("🌡️", "AMB TEMP:", rx + 15, y_off + spacing*2, "#EC7063", box_w)
-        self.val_hum   = self.add_sensor_line("💧", "HUMIDITY:", rx + 15, y_off + spacing*3, "#5499C7", box_w)
-        self.val_dew   = self.add_sensor_line("✨", "DEW POINT:", rx + 15, y_off + spacing*4, "#A569BD", box_w)
-        self.val_pres  = self.add_sensor_line("⏲️", "PRESSURE:", rx + 15, y_off + spacing*5, "#58D68D", box_w)
-        self.val_wind  = self.add_sensor_line("💨", "WIND SPD:", rx + 15, y_off + spacing*6, "#F4D03F", box_w)
-        self.val_rain  = self.add_sensor_line("☔", "RAIN DET:", rx + 15, y_off + spacing*7, "#AF7AC5", box_w)
-        self.val_dome  = self.add_sensor_line("🏠", "ROOF STAT:", rx + 15, y_off + spacing*8, "#EB984E", box_w)
-        self.val_hrs   = self.add_sensor_line("⌛", "OP HOURS:", rx + 15, y_off + spacing*9.4, "#FFCC00", box_w)
-        self.sync_light = self.canvas.create_oval(rx + 15, y_off + spacing*9.4 - 8, rx + 31, y_off + spacing*9.4 + 8, fill="gray", outline="white")
+        
+        # SLIDER - Under Sky Cond
+        self.slider = tk.Scale(self.root, from_=5, to=60, orient='horizontal', bg='#050505', fg='white', 
+                               troughcolor='#500', activebackground='red', highlightthickness=0, 
+                               font=("Arial", 8), command=self.update_threshold)
+        self.slider.set(self.cloud_threshold)
+        self.slider.place(x=rx + 55, y=y_off + spacing + 18, width=box_w - 80)
 
-        # Layout Positions
+        # Shifted Sensors
+        y_mid = y_off + (spacing * 2.8)
+        self.val_amb   = self.add_sensor_line("🌡️", "AMB TEMP:", rx + 15, y_mid, "#EC7063", box_w)
+        self.val_hum   = self.add_sensor_line("💧", "HUMIDITY:", rx + 15, y_mid + spacing, "#5499C7", box_w)
+        self.val_dew   = self.add_sensor_line("✨", "DEW POINT:", rx + 15, y_mid + spacing*2, "#A569BD", box_w)
+        self.val_pres  = self.add_sensor_line("⏲️", "PRESSURE:", rx + 15, y_mid + spacing*3, "#58D68D", box_w)
+        self.val_wind  = self.add_sensor_line("💨", "WIND SPD:", rx + 15, y_mid + spacing*4, "#F4D03F", box_w)
+        self.val_rain  = self.add_sensor_line("☔", "RAIN DET:", rx + 15, y_mid + spacing*5, "#AF7AC5", box_w)
+        self.val_dome  = self.add_sensor_line("🏠", "ROOF STAT:", rx + 15, y_mid + spacing*6, "#EB984E", box_w)
+        
+        # ROOF BUTTON - Under Roof Stat
+        self.roof_btn = tk.Button(self.root, text="OPEN / CLOSE ROOF", bg="#500", fg="white", 
+                                  activebackground="red", font=("Arial", 8, "bold"), command=self.toggle_roof)
+        self.roof_btn.place(x=rx + 55, y=y_mid + spacing*6 + 22, width=box_w - 80)
+
+        # Maintenance Info
+        y_bot = y_mid + spacing*8
+        self.val_hrs   = self.add_sensor_line("⌛", "OP HOURS:", rx + 15, y_bot, "#FFCC00", box_w)
+        self.sync_light = self.canvas.create_oval(rx + 15, y_bot - 8, rx + 31, y_bot + 8, fill="gray", outline="white")
+
+        # Image Displays
         self.all_img_id = self.canvas.create_image(self.sw*0.22, self.sh*0.4, anchor='center', tags="zoom")
         self.rad_img_id = self.canvas.create_image(self.sw*0.53, self.sh*0.4, anchor='center', tags="zoom")
         self.clk_img_id = self.canvas.create_image(self.sw*0.38, self.sh*0.82, anchor='center', tags="zoom")
 
+        # Popout Bindings
         self.canvas.tag_bind(self.all_img_id, "<Button-1>", lambda e: self.popout(self.path_allsky))
         self.canvas.tag_bind(self.rad_img_id, "<Button-1>", lambda e: self.popout(self.path_radar))
         self.canvas.tag_bind(self.clk_img_id, "<Button-1>", lambda e: self.popout(self.path_clock))
@@ -153,9 +165,6 @@ class SumnerHUD:
         if os.path.exists(self.path_notes):
             with open(self.path_notes, "r") as f: txt.insert('1.0', f.read())
         
-        btn_f = tk.Frame(d_win, bg="#050505")
-        btn_f.pack(fill="x", side="bottom", pady=20)
-        
         def save_all():
             with open(self.path_mirror_cfg, "w") as f: f.write(cfg_entry.get())
             with open(self.path_notes, 'w') as f: f.write(txt.get('1.0', 'end'))
@@ -166,8 +175,32 @@ class SumnerHUD:
                 with open(self.path_hours, "w") as f: f.write("0.0")
                 messagebox.showinfo("SUCCESS", "Timer Reset.")
 
+        btn_f = tk.Frame(d_win, bg="#050505")
+        btn_f.pack(fill="x", side="bottom", pady=20)
         tk.Button(btn_f, text="♻ RESET", bg="#D4AC0D", fg="black", font=("Arial", 11, "bold"), command=reset_hrs).pack(side="left", padx=20)
         tk.Button(btn_f, text="💾 SAVE", bg="#1E8449", fg="white", font=("Arial", 11, "bold"), command=save_all).pack(side="right", padx=20)
+
+    def check_cleaning_reminder(self):
+        if os.path.exists(self.path_hours):
+            try:
+                with open(self.path_hours, "r") as f:
+                    hrs = float(f.read().strip())
+                    if hrs >= 1000.0:
+                        messagebox.showwarning("MAINTENANCE", f"Alert: {hrs:.1f} Hours.\nClean dome/sensors.")
+            except: pass
+
+    def draw_stars(self):
+        for _ in range(60):
+            x, y = random.randint(0, self.sw), random.randint(0, self.sh)
+            self.canvas.create_oval(x, y, x+1, y+1, fill='white', outline='white')
+
+    def load_scale(self, path, w, h):
+        if not os.path.exists(path): return None
+        try:
+            img = Image.open(path)
+            img.thumbnail((w, h), Image.Resampling.LANCZOS)
+            return ImageTk.PhotoImage(img)
+        except: return None
 
     def update_loop(self):
         img_w, img_h = int(self.sw * 0.28), int(self.sh * 0.45)
@@ -209,7 +242,6 @@ class SumnerHUD:
                             try: hum_val = float(''.join(c for c in val if c in '0123456789.-'))
                             except: pass
                         elif "PRESSURE" in u_line:
-                            # CONVERSION: mbar/hPa to inHg
                             try:
                                 raw_p = float(''.join(c for c in val if c in '0123456789.-'))
                                 inches_p = raw_p * 0.02953
@@ -224,8 +256,7 @@ class SumnerHUD:
 
                 if sky_t is not None and amb_t is not None:
                     delta = amb_t - sky_t
-                    # TWEAK: Increased threshold to 30 for narrow FOV BCC sensor
-                    status = "CLEAR" if delta > 30 else "CLOUDY"
+                    status = "CLEAR" if delta > self.cloud_threshold else "CLOUDY"
                     self.canvas.itemconfig(self.val_cloud, text=status, fill="lightgreen" if status == "CLEAR" else "orange")
                 
                 if amb_t is not None and hum_val is not None:
@@ -236,14 +267,6 @@ class SumnerHUD:
             except Exception as e: print(f"Parser Error: {e}")
 
         self.root.after(5000, self.update_loop)
-
-    def load_scale(self, path, w, h):
-        if not os.path.exists(path): return None
-        try:
-            img = Image.open(path)
-            img.thumbnail((w, h), Image.Resampling.LANCZOS)
-            return ImageTk.PhotoImage(img)
-        except: return None
 
 if __name__ == "__main__":
     root = tk.Tk()
