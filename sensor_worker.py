@@ -4,13 +4,15 @@ import RPi.GPIO as GPIO
 # --- CONFIG ---
 BME_ADDR = 0x76  
 MLX_ADDR = 0x5A
-WIND_PIN = 4   # Brown wire per your saved info
+WIND_PIN = 4   
+RAIN_PIN = 18  # Rain Sensor Pin
 PATH_SENSORS = "/home/pi/allsky_guard/sensors.txt"
 
 # Initialize Bus and GPIO
 bus = smbus2.SMBus(1)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(WIND_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(RAIN_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP) # High=Dry, Low=Wet
 
 # Wind Speed Pulse Counter
 wind_pulses = 0
@@ -22,8 +24,6 @@ GPIO.add_event_detect(WIND_PIN, GPIO.FALLING, callback=count_wind)
 
 def get_mlx_sky_temp():
     try:
-        # Read raw word from MLX RAM address 0x07 (Object Temp)
-        # We use a try block because MLX can be "noisy" on the I2C bus
         raw_data = bus.read_word_data(MLX_ADDR, 0x07)
         celsius = (raw_data * 0.02) - 273.15
         return (celsius * 9/5) + 32
@@ -32,7 +32,7 @@ def get_mlx_sky_temp():
 
 def main():
     global wind_pulses
-    print(f"Worker started. Monitoring 0x76 and 0x5A...")
+    print(f"Worker started. Monitoring 0x76, 0x5A, and GPIO {RAIN_PIN}...")
     
     while True:
         # 1. BME280 Data
@@ -50,14 +50,17 @@ def main():
         sky_val = get_mlx_sky_temp()
         sky_str = f"{sky_val:.1f} F" if sky_val is not None else "--"
 
-        # 3. Wind Speed (3 second sample)
+        # 3. Rain Detection
+        is_wet = GPIO.input(RAIN_PIN) == GPIO.LOW
+        rain_str = "WET" if is_wet else "DRY"
+
+        # 4. Wind Speed (3 second sample)
         wind_pulses = 0
         time.sleep(3)
-        # Formula: 1.492 mph per pulse-per-second
         speed = (wind_pulses / 3) * 1.492
         wind_str = f"{speed:.1f} MPH"
 
-        # 4. Write to File
+        # 5. Write to File
         try:
             with open(PATH_SENSORS, "w") as f:
                 f.write(f"SKY TEMP: {sky_str}\n")
@@ -65,14 +68,9 @@ def main():
                 f.write(f"HUMIDITY: {hum_str}\n")
                 f.write(f"PRESSURE: {pre_str}\n")
                 f.write(f"WIND SPD: {wind_str}\n")
-                f.write(f"PRECIP: DRY\n") # Placeholder
-            
-            print(f"Update: Sky {sky_str} | Amb {amb_str} | Wind {wind_str}")
+                f.write(f"PRECIP: {rain_str}\n")
         except Exception as e:
             print(f"File Write Error: {e}")
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        GPIO.cleanup()
+    main()

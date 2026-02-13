@@ -237,12 +237,17 @@ class SumnerHUD:
                             self.canvas.itemconfig(self.val_hum, text=val)
                             try: hum_val = float(''.join(c for c in val if c in '0123456789.-'))
                             except: pass
-                        elif "PRESSURE" in u_line:
+                        elif "PRES" in u_line: # Catches PRESSURE, PRES, or BAROPRES
                             try:
+                                # Strip everything except numbers, dots, and dashes
                                 raw_p = float(''.join(c for c in val if c in '0123456789.-'))
-                                inches_p = raw_p * 0.02953
-                                self.canvas.itemconfig(self.val_pres, text=f"{inches_p:.2f} in")
-                            except: self.canvas.itemconfig(self.val_pres, text=val)
+                                if raw_p > 0:
+                                    inches_p = raw_p * 0.02953
+                                    self.canvas.itemconfig(self.val_pres, text=f"{inches_p:.2f} in")
+                                else:
+                                    self.canvas.itemconfig(self.val_pres, text="LOW")
+                            except Exception as e: 
+                                self.canvas.itemconfig(self.val_pres, text=val)
                         elif "WIND SPD" in u_line: self.canvas.itemconfig(self.val_wind, text=val)
                         elif "PRECIP" in u_line or "RAIN" in u_line: 
                             self.canvas.itemconfig(self.val_rain, text=val, fill="red" if "WET" in val.upper() else "cyan")

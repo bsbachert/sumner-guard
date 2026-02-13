@@ -27,9 +27,18 @@ class SumnerHUD:
         self.path_hours = "/home/pi/allsky_guard/hours.txt"
         self.path_notes = "/home/pi/allsky_guard/dossier.txt"
         self.path_mirror_cfg = "/home/pi/allsky_guard/mirror_config.txt"
+        self.path_thresh = "/home/pi/allsky_guard/cloud_threshold.txt"
         
         self.app_manager = "/usr/share/applications/indigo-server-manager.desktop"
         self.app_imager = "/usr/share/applications/ain-imager.desktop"
+
+        # --- LOAD SAVED SENSITIVITY ---
+        self.cloud_threshold = 30.0
+        if os.path.exists(self.path_thresh):
+            try:
+                with open(self.path_thresh, "r") as f:
+                    self.cloud_threshold = float(f.read().strip())
+            except: pass
 
         self.canvas = tk.Canvas(root, width=self.sw, height=self.sh, bg='black', highlightthickness=0)
         self.canvas.pack()
@@ -39,6 +48,17 @@ class SumnerHUD:
         self.check_cleaning_reminder()
         self.update_loop()
 
+    def update_threshold(self, val):
+        self.cloud_threshold = float(val)
+        try:
+            with open(self.path_thresh, "w") as f:
+                f.write(str(self.cloud_threshold))
+        except: pass
+
+    def toggle_roof(self):
+        print("Roof Toggle Triggered")
+        messagebox.showinfo("ROOF CONTROL", "Roof Command Sent")
+
     def launch_seestar(self):
         w, h, x, y = "450", "900", "100", "100"
         if os.path.exists(self.path_mirror_cfg):
@@ -47,11 +67,113 @@ class SumnerHUD:
                     coords = f.read().strip().split(',')
                     if len(coords) == 4: w, h, x, y = coords
             except: pass
-
-        cmd = ["/snap/bin/scrcpy", "--always-on-top", "--window-title", "Seestar Live",
+        subprocess.Popen(["/snap/bin/scrcpy", "--always-on-top", "--window-title", "Seestar Live",
                "--max-size", "1920", "--video-bit-rate", "4M", "--max-fps", "30",
-               "--window-x", x, "--window-y", y, "--window-width", w, "--window-height", h]
-        subprocess.Popen(cmd)
+               "--window-x", x, "--window-y", y, "--window-width", w, "--window-height", h])
+
+    def create_ui_elements(self):
+        self.canvas.create_text(self.sw//2, 25, text="--- OBSERVATORY CONTROLS ---", fill="#FFCC00", font=("Arial", 12, "bold"))
+        
+        tk.Button(self.root, text="🚀 INDIGO", bg="#003300", fg="white", font=("Arial", 9, "bold"), command=lambda: subprocess.Popen(["gio", "launch", self.app_manager])).place(x=self.sw//2 - 210, y=45)
+        tk.Button(self.root, text="🔭 IMAGER", bg="#001133", fg="white", font=("Arial", 9, "bold"), command=lambda: subprocess.Popen(["gio", "launch", self.app_imager])).place(x=self.sw//2 - 80, y=45)
+        tk.Button(self.root, text="📱 SEESTAR (V40)", bg="#4B0082", fg="white", font=("Arial", 9, "bold"), command=self.launch_seestar).place(x=self.sw//2 + 50, y=45)
+        tk.Button(self.root, text="MAINT / DOSSIER", command=self.open_dossier, bg="#222", fg="white", font=("Arial", 9, "bold")).place(x=20, y=20)
+        tk.Button(self.root, text="EXIT HUD", command=self.root.destroy, bg="#500", fg="white", font=("Arial", 9, "bold")).place(x=150, y=20)
+
+        box_w, box_h = int(self.sw * 0.25), int(self.sh * 0.85)
+        rx, ry = self.sw - box_w - 20, 40
+        self.canvas.create_rectangle(rx, ry, rx + box_w, ry + box_h, fill='#050505', outline='#00FFCC', width=3)
+        
+        y_off, spacing = ry + 45, box_h // 12.5
+        self.val_sky   = self.add_sensor_line("🌡️", "SKY TEMP:", rx + 15, y_off, "#AAB7B8", box_w)
+        self.val_cloud = self.add_sensor_line("☁️", "SKY COND:", rx + 15, y_off + spacing, "#5DADE2", box_w)
+        
+        self.slider = tk.Scale(self.root, from_=5, to=60, orient='horizontal', bg='#050505', fg='white', troughcolor='#500', activebackground='red', highlightthickness=0, font=("Arial", 8), command=self.update_threshold)
+        self.slider.set(self.cloud_threshold)
+        self.slider.place(x=rx + 55, y=y_off + spacing + 18, width=box_w - 80)
+
+        y_mid = y_off + (spacing * 2.8)
+        self.val_amb   = self.add_sensor_line("🌡️", "AMB TEMP:", rx + 15, y_mid, "#EC7063", box_w)
+        self.val_hum   = self.add_sensor_line("💧", "HUMIDITY:", rx + 15, y_mid + spacing, "#5499C7", box_w)
+        self.val_dew   = self.add_sensor_line("✨", "DEW POINT:", rx + 15, y_mid + spacing*2, "#A569BD", box_w)
+        self.val_pres  = self.add_sensor_line("⏲️", "PRESSURE:", rx + 15, y_mid + spacing*3, "#58D68D", box_w)
+        self.val_wind  = self.add_sensor_line("💨", "WIND SPD:", rx + 15, y_mid + spacing*4, "#F4D03F", box_w)
+        self.val_rain  = self.add_sensor_line("☔", "RAIN DET:", rx + 15, y_mid + spacing*5, "#AF7AC5", box_w)
+        self.val_dome  = self.add_sensor_line("🏠", "ROOF STAT:", rx + 15, y_mid + spacing*6, "#EB984E", box_w)
+        
+        self.roof_btn = tk.Button(self.root, text="OPEN / CLOSE ROOF", bg="#500", fg="white", activebackground="red", font=("Arial", 8, "bold"), command=self.toggle_roof)
+        self.roof_btn.place(x=rx + 55, y=y_mid + spacing*6 + 22, width=box_w - 80)
+
+        # RESTORED OP HOURS POSITION
+        y_bot = y_mid + spacing*8
+        self.val_hrs   = self.add_sensor_line("⌛", "OP HOURS:", rx + 15, y_bot, "#FFCC00", box_w)
+        self.sync_light = self.canvas.create_oval(rx + 15, y_bot - 8, rx + 31, y_bot + 8, fill="gray", outline="white")
+
+        self.all_img_id = self.canvas.create_image(self.sw*0.22, self.sh*0.4, anchor='center', tags="zoom")
+        self.rad_img_id = self.canvas.create_image(self.sw*0.53, self.sh*0.4, anchor='center', tags="zoom")
+        self.clk_img_id = self.canvas.create_image(self.sw*0.38, self.sh*0.82, anchor='center', tags="zoom")
+
+        self.canvas.tag_bind(self.all_img_id, "<Button-1>", lambda e: self.popout(self.path_allsky))
+        self.canvas.tag_bind(self.rad_img_id, "<Button-1>", lambda e: self.popout(self.path_radar))
+        self.canvas.tag_bind(self.clk_img_id, "<Button-1>", lambda e: self.popout(self.path_clock))
+
+    def add_sensor_line(self, icon, label, x, y, color, box_w):
+        f_size = 11 if self.sw > 1000 else 8
+        self.canvas.create_text(x, y, text=icon, anchor='w', fill=color, font=("Arial", 16))
+        self.canvas.create_text(x + 40, y, text=label, anchor='w', fill="white", font=("Arial", f_size, "bold"))
+        return self.canvas.create_text(x + box_w - 30, y, text="--", anchor='e', fill="cyan", font=("Courier", 16, "bold"))
+
+    def popout(self, path):
+        if not os.path.exists(path): return
+        pop = tk.Toplevel(self.root)
+        pop.attributes("-fullscreen", True, "-topmost", True)
+        pop.config(bg='black')
+        img = Image.open(path)
+        if "radar" in path.lower():
+            new_h = int(self.sh * 0.88)
+            ratio = new_h / float(img.size[1])
+            new_w = int(float(img.size[0]) * ratio)
+            img = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        else:
+            img.thumbnail((int(self.sw * 0.8), int(self.sh * 0.8)), Image.Resampling.LANCZOS)
+        self.p_img = ImageTk.PhotoImage(img)
+        tk.Button(pop, image=self.p_img, bg='black', bd=0, activebackground='black', command=pop.destroy).pack(expand=True)
+
+    def open_dossier(self):
+        d_win = tk.Toplevel(self.root)
+        d_win.geometry(f"{int(self.sw*0.45)}x{int(self.sh*0.8)}")
+        d_win.config(bg="#050505")
+        d_win.attributes("-topmost", True)
+        tk.Label(d_win, text="SYSTEM DOSSIER", bg="#050505", fg="#FFCC00", font=("Arial", 18, "bold")).pack(pady=10)
+        
+        m_frame = tk.Frame(d_win, bg="#111")
+        m_frame.pack(fill="x", padx=20)
+        tk.Label(m_frame, text="Mirror Config:", bg="#111", fg="white").pack(side="left")
+        cfg_entry = tk.Entry(m_frame, bg="black", fg="cyan", insertbackground="white")
+        cfg_entry.pack(side="left", padx=10, fill="x", expand=True)
+        if os.path.exists(self.path_mirror_cfg):
+            with open(self.path_mirror_cfg, "r") as f: cfg_entry.insert(0, f.read().strip())
+
+        txt = scrolledtext.ScrolledText(d_win, bg="black", fg="#00FFCC", font=("Courier", 14), insertbackground="white")
+        txt.pack(padx=20, pady=5, expand=True, fill='both')
+        if os.path.exists(self.path_notes):
+            with open(self.path_notes, "r") as f: txt.insert('1.0', f.read())
+        
+        def save_all():
+            with open(self.path_mirror_cfg, "w") as f: f.write(cfg_entry.get())
+            with open(self.path_notes, 'w') as f: f.write(txt.get('1.0', 'end'))
+            d_win.destroy()
+
+        # RESTORED RESET BUTTON
+        def reset_hrs():
+            if messagebox.askyesno("RESET", "Reset Maintenance Timer to 0?"):
+                with open(self.path_hours, "w") as f: f.write("0.0")
+                messagebox.showinfo("SUCCESS", "Timer Reset.")
+
+        btn_f = tk.Frame(d_win, bg="#050505")
+        btn_f.pack(fill="x", side="bottom", pady=20)
+        tk.Button(btn_f, text="♻ RESET", bg="#D4AC0D", fg="black", font=("Arial", 11, "bold"), command=reset_hrs).pack(side="left", padx=20)
+        tk.Button(btn_f, text="💾 SAVE", bg="#1E8449", fg="white", font=("Arial", 11, "bold"), command=save_all).pack(side="right", padx=20)
 
     def check_cleaning_reminder(self):
         if os.path.exists(self.path_hours):
@@ -67,118 +189,24 @@ class SumnerHUD:
             x, y = random.randint(0, self.sw), random.randint(0, self.sh)
             self.canvas.create_oval(x, y, x+1, y+1, fill='white', outline='white')
 
-    def create_ui_elements(self):
-        # 1. TOP BAR CONTROLS (Centered via percentage)
-        self.canvas.create_text(self.sw//2, 25, text="--- OBSERVATORY CONTROLS ---", fill="#FFCC00", font=("Arial", 12, "bold"))
-        
-        btn_y = 55
-        tk.Button(self.root, text="🚀 INDIGO", bg="#003300", fg="white", font=("Arial", 9, "bold"),
-                  command=lambda: subprocess.Popen(["gio", "launch", self.app_manager])).place(x=self.sw*0.25, y=btn_y, anchor="n")
-        
-        tk.Button(self.root, text="🔭 IMAGER", bg="#001133", fg="white", font=("Arial", 9, "bold"),
-                  command=lambda: subprocess.Popen(["gio", "launch", self.app_imager])).place(x=self.sw*0.35, y=btn_y, anchor="n")
-
-        tk.Button(self.root, text="📱 SEESTAR", bg="#4B0082", fg="white", font=("Arial", 9, "bold"),
-                  command=self.launch_seestar).place(x=self.sw*0.45, y=btn_y, anchor="n")
-
-        tk.Button(self.root, text="📂 DOSSIER", command=self.open_dossier, bg="#222", fg="white", font=("Arial", 9, "bold")).place(x=self.sw*0.55, y=btn_y, anchor="n")
-        
-        tk.Button(self.root, text="EXIT HUD", command=self.root.destroy, bg="#500", fg="white", font=("Arial", 9, "bold")).place(x=self.sw*0.65, y=btn_y, anchor="n")
-
-        # 2. SENSOR BOX (Relative width and height)
-        box_w = int(self.sw * 0.28)
-        box_h = int(self.sh * 0.85)
-        rx = self.sw - box_w - 20
-        ry = 40
-        self.canvas.create_rectangle(rx, ry, rx + box_w, ry + box_h, fill='#050505', outline='#00FFCC', width=2)
-        
-        y_off = ry + 40
-        spacing = box_h // 11
-        self.val_sky   = self.add_sensor_line("🌡️", "SKY TEMP:", rx + 15, y_off, "#AAB7B8")
-        self.val_cloud = self.add_sensor_line("☁️", "SKY COND:", rx + 15, y_off + spacing, "#5DADE2")
-        self.val_amb   = self.add_sensor_line("🌡️", "AMB TEMP:", rx + 15, y_off + spacing*2, "#EC7063")
-        self.val_hum   = self.add_sensor_line("💧", "HUMIDITY:", rx + 15, y_off + spacing*3, "#5499C7")
-        self.val_dew   = self.add_sensor_line("✨", "DEW POINT:", rx + 15, y_off + spacing*4, "#A569BD")
-        self.val_pres  = self.add_sensor_line("⏲️", "PRESSURE:", rx + 15, y_off + spacing*5, "#58D68D")
-        self.val_wind  = self.add_sensor_line("💨", "WIND SPD:", rx + 15, y_off + spacing*6, "#F4D03F")
-        self.val_rain  = self.add_sensor_line("☔", "RAIN DET:", rx + 15, y_off + spacing*7, "#AF7AC5")
-        self.val_dome  = self.add_sensor_line("🏠", "ROOF STAT:", rx + 15, y_off + spacing*8, "#EB984E")
-        self.val_hrs   = self.add_sensor_line("⌛", "OP HOURS:", rx + 15, y_off + spacing*9.5, "#FFCC00")
-        self.sync_light = self.canvas.create_oval(rx + 15, y_off + spacing*9.5 - 8, rx + 31, y_off + spacing*9.5 + 8, fill="gray", outline="white")
-
-        # 3. IMAGES (Grid layout to prevent overlap)
-        self.all_img_id = self.canvas.create_image(self.sw*0.32, self.sh*0.35, anchor='center', tags="zoom")
-        self.rad_img_id = self.canvas.create_image(self.sw*0.68, self.sh*0.35, anchor='center', tags="zoom")
-        self.clk_img_id = self.canvas.create_image(self.sw*0.48, self.sh*0.80, anchor='center', tags="zoom")
-
-        self.canvas.tag_bind(self.all_img_id, "<Button-1>", lambda e: self.popout(self.path_allsky))
-        self.canvas.tag_bind(self.rad_img_id, "<Button-1>", lambda e: self.popout(self.path_radar))
-        self.canvas.tag_bind(self.clk_img_id, "<Button-1>", lambda e: self.popout(self.path_clock))
-
-    def add_sensor_line(self, icon, label, x, y, color):
-        f_size = 14 if self.sw > 1000 else 10
-        self.canvas.create_text(x, y, text=icon, anchor='w', fill=color, font=("Arial", f_size + 4))
-        self.canvas.create_text(x + 35, y, text=label, anchor='w', fill="white", font=("Arial", f_size, "bold"))
-        return self.canvas.create_text(x + (self.sw*0.25), y, text="--", anchor='e', fill="cyan", font=("Courier", f_size + 4, "bold"))
-
-    def popout(self, path):
-        if not os.path.exists(path): return
-        pop = tk.Toplevel(self.root)
-        pop.attributes("-fullscreen", True, "-topmost", True)
-        pop.config(bg='black')
-        img = Image.open(path)
-        img.thumbnail((self.sw, self.sh), Image.Resampling.LANCZOS)
-        self.p_img = ImageTk.PhotoImage(img)
-        tk.Button(pop, image=self.p_img, bg='black', bd=0, activebackground='black', command=pop.destroy).pack(expand=True)
-
-    def open_dossier(self):
-        d_win = tk.Toplevel(self.root)
-        d_win.geometry(f"{int(self.sw*0.8)}x{int(self.sh*0.8)}")
-        d_win.config(bg="#050505")
-        d_win.attributes("-topmost", True)
-        tk.Label(d_win, text="SYSTEM DOSSIER", bg="#050505", fg="#FFCC00", font=("Arial", 18, "bold")).pack(pady=10)
-        
-        m_frame = tk.Frame(d_win, bg="#111")
-        m_frame.pack(fill="x", padx=20)
-        tk.Label(m_frame, text="Mirror Config (W,H,X,Y):", bg="#111", fg="white").pack(side="left")
-        cfg_entry = tk.Entry(m_frame, bg="black", fg="cyan", insertbackground="white")
-        cfg_entry.pack(side="left", padx=10)
-        if os.path.exists(self.path_mirror_cfg):
-            with open(self.path_mirror_cfg, "r") as f: cfg_entry.insert(0, f.read().strip())
-
-        txt = scrolledtext.ScrolledText(d_win, bg="black", fg="#00FFCC", font=("Courier", 14), insertbackground="white")
-        txt.pack(padx=20, pady=5, expand=True, fill='both')
-        if os.path.exists(self.path_notes):
-            with open(self.path_notes, "r") as f: txt.insert('1.0', f.read())
-        
-        btn_f = tk.Frame(d_win, bg="#050505")
-        btn_f.pack(fill="x", side="bottom", pady=20)
-        
-        def save_all():
-            with open(self.path_mirror_cfg, "w") as f: f.write(cfg_entry.get())
-            with open(self.path_notes, 'w') as f: f.write(txt.get('1.0', 'end'))
-            d_win.destroy()
-
-        def reset_h():
-            if messagebox.askyesno("RESET", "Reset maintenance timer?"):
-                with open(self.path_hours, "w") as f: f.write("0.0")
-
-        tk.Button(btn_f, text="♻ RESET TIMER", bg="#D4AC0D", font=("Arial", 11, "bold"), command=reset_h).pack(side="left", padx=50)
-        tk.Button(btn_f, text="💾 SAVE & EXIT", bg="#1E8449", fg="white", font=("Arial", 11, "bold"), command=save_all).pack(side="right", padx=50)
+    def load_scale(self, path, w, h):
+        if not os.path.exists(path): return None
+        try:
+            img = Image.open(path)
+            img.thumbnail((w, h), Image.Resampling.LANCZOS)
+            return ImageTk.PhotoImage(img)
+        except: return None
 
     def update_loop(self):
-        # Image sizes now relative to screen width (roughly 30% of screen)
-        thumb_w = int(self.sw * 0.32)
-        thumb_h = int(self.sh * 0.45)
-        
-        self.img_all = self.load_scale(self.path_allsky, thumb_w, thumb_h)
+        img_w, img_h = int(self.sw * 0.28), int(self.sh * 0.45)
+        self.img_all = self.load_scale(self.path_allsky, img_w, img_h)
         if self.img_all: self.canvas.itemconfig(self.all_img_id, image=self.img_all)
-        self.img_rad = self.load_scale(self.path_radar, thumb_w, thumb_h)
+        self.img_rad = self.load_scale(self.path_radar, img_w, img_h)
         if self.img_rad: self.canvas.itemconfig(self.rad_img_id, image=self.img_rad)
         self.img_clk = self.load_scale(self.path_clock, int(self.sw*0.5), int(self.sh*0.35))
         if self.img_clk: self.canvas.itemconfig(self.clk_img_id, image=self.img_clk)
 
-        # Hour Logging and Sensor Parsing remains the same...
+        # RESTORED HOURS/SYNC LOGIC
         if os.path.exists(self.path_hours):
             try:
                 mtime = os.path.getmtime(self.path_hours)
@@ -196,6 +224,7 @@ class SumnerHUD:
                         u_line = line.upper().strip()
                         if ":" not in u_line: continue
                         val = line.split(":", 1)[-1].strip()
+
                         if "SKY TEMP" in u_line: 
                             self.canvas.itemconfig(self.val_sky, text=val)
                             try: sky_t = float(''.join(c for c in val if c in '0123456789.-'))
@@ -208,7 +237,32 @@ class SumnerHUD:
                             self.canvas.itemconfig(self.val_hum, text=val)
                             try: hum_val = float(''.join(c for c in val if c in '0123456789.-'))
                             except: pass
-                        elif "PRESSURE" in u_line: self.canvas.itemconfig(self.val_pres, text=val)
+                        elif "PRESSURE" in u_line:
+                            try:
+                                raw_p = float(''.join(c for c in val if c in '0123456789.-'))
+                                inches_p = raw_p * 0.02953
+                                self.canvas.itemconfig(self.val_pres, text=f"{inches_p:.2f} in")
+                            except: self.canvas.itemconfig(self.val_pres, text=val)
                         elif "WIND SPD" in u_line: self.canvas.itemconfig(self.val_wind, text=val)
                         elif "PRECIP" in u_line or "RAIN" in u_line: 
-                            self.canvas.itemconfig(self.val_rain, text=val, fill="red" if "WET" in
+                            self.canvas.itemconfig(self.val_rain, text=val, fill="red" if "WET" in val.upper() else "cyan")
+                        elif "DOME" in u_line or "ROOF" in u_line: 
+                            self.canvas.itemconfig(self.val_dome, text=val)
+                if sky_t is not None and amb_t is not None:
+                    delta = amb_t - sky_t
+                    status = "CLEAR" if delta > self.cloud_threshold else "CLOUDY"
+                    self.canvas.itemconfig(self.val_cloud, text=status, fill="lightgreen" if status == "CLEAR" else "orange")
+                
+                if amb_t is not None and hum_val is not None:
+                    T = (amb_t - 32) * 5/9
+                    gamma = (math.log(hum_val/100) + ((17.27 * T) / (237.3 + T)))
+                    dew_f = ((237.3 * gamma) / (17.27 - gamma) * 9/5) + 32
+                    self.canvas.itemconfig(self.val_dew, text=f"{dew_f:.1f} F")
+            except Exception as e: print(f"Parser Error: {e}")
+
+        self.root.after(5000, self.update_loop)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = SumnerHUD(root)
+    root.mainloop()
