@@ -29,7 +29,7 @@ class SumnerHUD:
         self.path_mirror_cfg = "/home/pi/allsky_guard/mirror_config.txt"
         self.path_thresh = "/home/pi/allsky_guard/cloud_threshold.txt"
         self.path_radar_id = "/home/pi/allsky_guard/radar_coords.txt"
-        self.path_sync_script = "/home/pi/allsky_guard/get_radar.py" # For Force Sync
+        self.path_sync_script = "/home/pi/allsky_guard/get_radar.py"
         
         self.app_manager = "/usr/share/applications/indigo-server-manager.desktop"
         self.app_imager = "/usr/share/applications/ain-imager.desktop"
@@ -154,9 +154,10 @@ class SumnerHUD:
         if os.path.exists(self.path_mirror_cfg):
             with open(self.path_mirror_cfg, "r") as f: cfg_entry.insert(0, f.read().strip())
 
+        # RADAR STATION ID INPUT
         r_frame = tk.Frame(d_win, bg="#111")
         r_frame.pack(fill="x", padx=20, pady=5)
-        tk.Label(r_frame, text="Radar Station (KIWA):", bg="#111", fg="white").pack(side="left")
+        tk.Label(r_frame, text="Radar Station:", bg="#111", fg="white").pack(side="left")
         radar_entry = tk.Entry(r_frame, bg="black", fg="orange", insertbackground="white")
         radar_entry.pack(side="left", padx=10, fill="x", expand=True)
         if os.path.exists(self.path_radar_id):
@@ -169,7 +170,8 @@ class SumnerHUD:
         
         def save_all():
             with open(self.path_mirror_cfg, "w") as f: f.write(cfg_entry.get())
-            with open(self.path_radar_id, "w") as f: f.write(radar_entry.get().upper())
+            # Ensure the Radar ID is stripped of spaces and saved correctly
+            with open(self.path_radar_id, "w") as f: f.write(radar_entry.get().upper().strip())
             with open(self.path_notes, 'w') as f: f.write(txt.get('1.0', 'end'))
             d_win.destroy()
 
@@ -178,18 +180,13 @@ class SumnerHUD:
                 with open(self.path_hours, "w") as f: f.write("0.0")
                 messagebox.showinfo("SUCCESS", "Timer Reset.")
 
-        # FORCE SYNC FUNCTION
         def force_sync():
-            try:
-                subprocess.Popen(["python3", self.path_sync_script])
-                messagebox.showinfo("SYNC", "Radar Sync Started in Background.")
-            except Exception as e:
-                messagebox.showerror("SYNC ERROR", f"Could not start sync: {e}")
+            subprocess.Popen(["python3", self.path_sync_script])
+            messagebox.showinfo("SYNC", "Radar Sync Started...")
 
         btn_f = tk.Frame(d_win, bg="#050505")
         btn_f.pack(fill="x", side="bottom", pady=20)
         tk.Button(btn_f, text="♻ RESET", bg="#D4AC0D", fg="black", font=("Arial", 11, "bold"), command=reset_hrs).pack(side="left", padx=20)
-        # ADDED FORCE SYNC BUTTON
         tk.Button(btn_f, text="🔄 FORCE SYNC", bg="#4B0082", fg="white", font=("Arial", 11, "bold"), command=force_sync).pack(side="left", padx=10)
         tk.Button(btn_f, text="💾 SAVE", bg="#1E8449", fg="white", font=("Arial", 11, "bold"), command=save_all).pack(side="right", padx=20)
 
@@ -210,19 +207,35 @@ class SumnerHUD:
     def load_scale(self, path, w, h):
         if not os.path.exists(path): return None
         try:
-            img = Image.open(path)
-            img.thumbnail((w, h), Image.Resampling.LANCZOS)
-            return ImageTk.PhotoImage(img)
-        except: return None
+            # FIX: Explicitly open and close the file to avoid lock issues
+            with Image.open(path) as raw_img:
+                img = raw_img.convert("RGB")
+                img.thumbnail((w, h), Image.Resampling.LANCZOS)
+                return ImageTk.PhotoImage(img)
+        except Exception as e: 
+            print(f"HUD Load Error ({path}): {e}")
+            return None
 
     def update_loop(self):
         img_w, img_h = int(self.sw * 0.28), int(self.sh * 0.45)
-        self.img_all = self.load_scale(self.path_allsky, img_w, img_h)
-        if self.img_all: self.canvas.itemconfig(self.all_img_id, image=self.img_all)
-        self.img_rad = self.load_scale(self.path_radar, img_w, img_h)
-        if self.img_rad: self.canvas.itemconfig(self.rad_img_id, image=self.img_rad)
-        self.img_clk = self.load_scale(self.path_clock, int(self.sw*0.5), int(self.sh*0.35))
-        if self.img_clk: self.canvas.itemconfig(self.clk_img_id, image=self.img_clk)
+        
+        # 1. Update Allsky Image
+        new_all = self.load_scale(self.path_allsky, img_w, img_h)
+        if new_all: 
+            self.img_all = new_all # Keep reference to prevent GC
+            self.canvas.itemconfig(self.all_img_id, image=self.img_all)
+        
+        # 2. Update Radar Image (This now swaps correctly)
+        new_rad = self.load_scale(self.path_radar, img_w, img_h)
+        if new_rad: 
+            self.img_rad = new_rad 
+            self.canvas.itemconfig(self.rad_img_id, image=self.img_rad)
+        
+        # 3. Update Clock Image
+        new_clk = self.load_scale(self.path_clock, int(self.sw*0.5), int(self.sh*0.35))
+        if new_clk: 
+            self.img_clk = new_clk
+            self.canvas.itemconfig(self.clk_img_id, image=self.img_clk)
 
         if os.path.exists(self.path_hours):
             try:
