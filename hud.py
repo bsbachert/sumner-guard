@@ -28,6 +28,8 @@ class SumnerHUD:
         self.path_notes = "/home/pi/allsky_guard/dossier.txt"
         self.path_mirror_cfg = "/home/pi/allsky_guard/mirror_config.txt"
         self.path_thresh = "/home/pi/allsky_guard/cloud_threshold.txt"
+        self.path_radar_id = "/home/pi/allsky_guard/radar_coords.txt"
+        self.path_sync_script = "/home/pi/allsky_guard/get_radar.py" # For Force Sync
         
         self.app_manager = "/usr/share/applications/indigo-server-manager.desktop"
         self.app_imager = "/usr/share/applications/ain-imager.desktop"
@@ -56,7 +58,6 @@ class SumnerHUD:
         except: pass
 
     def toggle_roof(self):
-        print("Roof Toggle Triggered")
         messagebox.showinfo("ROOF CONTROL", "Roof Command Sent")
 
     def launch_seestar(self):
@@ -104,7 +105,6 @@ class SumnerHUD:
         self.roof_btn = tk.Button(self.root, text="OPEN / CLOSE ROOF", bg="#500", fg="white", activebackground="red", font=("Arial", 8, "bold"), command=self.toggle_roof)
         self.roof_btn.place(x=rx + 55, y=y_mid + spacing*6 + 22, width=box_w - 80)
 
-        # RESTORED OP HOURS POSITION
         y_bot = y_mid + spacing*8
         self.val_hrs   = self.add_sensor_line("⌛", "OP HOURS:", rx + 15, y_bot, "#FFCC00", box_w)
         self.sync_light = self.canvas.create_oval(rx + 15, y_bot - 8, rx + 31, y_bot + 8, fill="gray", outline="white")
@@ -154,6 +154,14 @@ class SumnerHUD:
         if os.path.exists(self.path_mirror_cfg):
             with open(self.path_mirror_cfg, "r") as f: cfg_entry.insert(0, f.read().strip())
 
+        r_frame = tk.Frame(d_win, bg="#111")
+        r_frame.pack(fill="x", padx=20, pady=5)
+        tk.Label(r_frame, text="Radar Station (KIWA):", bg="#111", fg="white").pack(side="left")
+        radar_entry = tk.Entry(r_frame, bg="black", fg="orange", insertbackground="white")
+        radar_entry.pack(side="left", padx=10, fill="x", expand=True)
+        if os.path.exists(self.path_radar_id):
+            with open(self.path_radar_id, "r") as f: radar_entry.insert(0, f.read().strip())
+
         txt = scrolledtext.ScrolledText(d_win, bg="black", fg="#00FFCC", font=("Courier", 14), insertbackground="white")
         txt.pack(padx=20, pady=5, expand=True, fill='both')
         if os.path.exists(self.path_notes):
@@ -161,18 +169,28 @@ class SumnerHUD:
         
         def save_all():
             with open(self.path_mirror_cfg, "w") as f: f.write(cfg_entry.get())
+            with open(self.path_radar_id, "w") as f: f.write(radar_entry.get().upper())
             with open(self.path_notes, 'w') as f: f.write(txt.get('1.0', 'end'))
             d_win.destroy()
 
-        # RESTORED RESET BUTTON
         def reset_hrs():
             if messagebox.askyesno("RESET", "Reset Maintenance Timer to 0?"):
                 with open(self.path_hours, "w") as f: f.write("0.0")
                 messagebox.showinfo("SUCCESS", "Timer Reset.")
 
+        # FORCE SYNC FUNCTION
+        def force_sync():
+            try:
+                subprocess.Popen(["python3", self.path_sync_script])
+                messagebox.showinfo("SYNC", "Radar Sync Started in Background.")
+            except Exception as e:
+                messagebox.showerror("SYNC ERROR", f"Could not start sync: {e}")
+
         btn_f = tk.Frame(d_win, bg="#050505")
         btn_f.pack(fill="x", side="bottom", pady=20)
         tk.Button(btn_f, text="♻ RESET", bg="#D4AC0D", fg="black", font=("Arial", 11, "bold"), command=reset_hrs).pack(side="left", padx=20)
+        # ADDED FORCE SYNC BUTTON
+        tk.Button(btn_f, text="🔄 FORCE SYNC", bg="#4B0082", fg="white", font=("Arial", 11, "bold"), command=force_sync).pack(side="left", padx=10)
         tk.Button(btn_f, text="💾 SAVE", bg="#1E8449", fg="white", font=("Arial", 11, "bold"), command=save_all).pack(side="right", padx=20)
 
     def check_cleaning_reminder(self):
@@ -206,7 +224,6 @@ class SumnerHUD:
         self.img_clk = self.load_scale(self.path_clock, int(self.sw*0.5), int(self.sh*0.35))
         if self.img_clk: self.canvas.itemconfig(self.clk_img_id, image=self.img_clk)
 
-        # RESTORED HOURS/SYNC LOGIC
         if os.path.exists(self.path_hours):
             try:
                 mtime = os.path.getmtime(self.path_hours)
@@ -237,9 +254,8 @@ class SumnerHUD:
                             self.canvas.itemconfig(self.val_hum, text=val)
                             try: hum_val = float(''.join(c for c in val if c in '0123456789.-'))
                             except: pass
-                        elif "PRES" in u_line: # Catches PRESSURE, PRES, or BAROPRES
+                        elif "PRES" in u_line:
                             try:
-                                # Strip everything except numbers, dots, and dashes
                                 raw_p = float(''.join(c for c in val if c in '0123456789.-'))
                                 if raw_p > 0:
                                     inches_p = raw_p * 0.02953

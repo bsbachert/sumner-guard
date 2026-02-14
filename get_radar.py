@@ -4,12 +4,11 @@ import requests
 from datetime import datetime
 
 DATA_DIR = "/home/pi/allsky_guard"
+COORD_FILE = os.path.join(DATA_DIR, "radar_coords.txt")
 
-# --- VERIFIED 2026 LINKS ---
-RADAR_URL = "https://radar.weather.gov/ridge/standard/KGRR_loop.gif"
+# Default if file doesn't exist (KGRR - Wyoming/Grand Rapids area)
+DEFAULT_RADAR_ID = "KGRR" 
 
-# We are only fetching TWO images now. 
-# Canadian Lakes is now being saved as 'clock_sumner.png'
 CLOCKS = {
     "clock_wyoming.png": "https://www.cleardarksky.com/c/HwkHlObMIcsk.gif",
     "clock_sumner.png": "https://www.cleardarksky.com/c/CdnLkMIcsk.gif"
@@ -20,11 +19,21 @@ HEADERS = {
     'Referer': 'https://www.cleardarksky.com/'
 }
 
+def get_radar_url():
+    # NOAA uses Station IDs (KGRR, KLWX, etc). 
+    # If you prefer Lat/Long, specialized APIs are needed, 
+    # but NOAA Station IDs are free and high-res.
+    radar_id = DEFAULT_RADAR_ID
+    if os.path.exists(COORD_FILE):
+        with open(COORD_FILE, "r") as f:
+            radar_id = f.read().strip().upper()
+    return f"https://radar.weather.gov/ridge/standard/{radar_id}_loop.gif"
+
 def update_data():
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR)
 
-    targets = {"radar.png": RADAR_URL}
+    targets = {"radar.png": get_radar_url()}
     targets.update(CLOCKS)
 
     print(f"--- Syncing Allsky Guard: {datetime.now().strftime('%H:%M:%S')} ---")
@@ -35,13 +44,13 @@ def update_data():
             if r.status_code == 200:
                 with open(os.path.join(DATA_DIR, filename), "wb") as f:
                     f.write(r.content)
-                print(f"  [SUCCESS] {filename} ({len(r.content)} bytes)")
+                print(f"  [SUCCESS] {filename}")
             else:
                 print(f"  [ERROR {r.status_code}] {filename}")
         except Exception as e:
             print(f"  [FAILED] {filename}: {e}")
 
-    # Log operational hours (+0.1 per sync)
+    # Log operational hours
     hrs_file = os.path.join(DATA_DIR, "hours.txt")
     current_hrs = 0.0
     if os.path.exists(hrs_file):
