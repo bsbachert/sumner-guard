@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, scrolledtext
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageDraw
 import os, subprocess, random, math, sys, fcntl
 from datetime import datetime
 
@@ -22,19 +22,25 @@ class SumnerHUD:
         # --- PATHS ---
         self.path_allsky = "/var/www/html/allsky/images/latest.jpg"
         self.path_radar = "/home/pi/allsky_guard/radar.png"
-        self.path_clock = "/home/pi/allsky_guard/clock_sumner.png"
+        self.path_clock = "/home/pi/allsky_guard/clock.png" 
         self.path_sensors = "/home/pi/allsky_guard/sensors.txt"
         self.path_hours = "/home/pi/allsky_guard/hours.txt"
         self.path_notes = "/home/pi/allsky_guard/dossier.txt"
         self.path_mirror_cfg = "/home/pi/allsky_guard/mirror_config.txt"
         self.path_thresh = "/home/pi/allsky_guard/cloud_threshold.txt"
+        
+        # ID Paths (Zip Path Removed)
         self.path_radar_id = "/home/pi/allsky_guard/radar_coords.txt"
+        self.path_csk_id = "/home/pi/allsky_guard/csk_id.txt"
         self.path_sync_script = "/home/pi/allsky_guard/get_radar.py"
         
         self.app_manager = "/usr/share/applications/indigo-server-manager.desktop"
         self.app_imager = "/usr/share/applications/ain-imager.desktop"
 
-        # --- LOAD SAVED SENSITIVITY ---
+        self.img_all = None
+        self.img_rad = None
+        self.img_clk = None
+
         self.cloud_threshold = 30.0
         if os.path.exists(self.path_thresh):
             try:
@@ -72,6 +78,25 @@ class SumnerHUD:
                "--max-size", "1920", "--video-bit-rate", "4M", "--max-fps", "30",
                "--window-x", x, "--window-y", y, "--window-width", w, "--window-height", h])
 
+    def create_placeholder(self, text, w, h):
+        """Generates a default image when IDs aren't set in the Dossier."""
+        img = Image.new('RGB', (w, h), color=(15, 15, 15))
+        draw = ImageDraw.Draw(img)
+        draw.rectangle([0, 0, w-1, h-1], outline="red", width=3)
+        draw.text((w//2, h//2), text, fill="white", anchor="mm", align="center")
+        return ImageTk.PhotoImage(img)
+
+    def load_scale(self, path, w, h, label):
+        if not os.path.exists(path) or os.path.getsize(path) < 100:
+            return self.create_placeholder(f"SET {label} ID\nIN DOSSIER", w, h)
+        try:
+            with Image.open(path) as raw:
+                img = raw.convert("RGB")
+                img.thumbnail((w, h), Image.Resampling.LANCZOS)
+                return ImageTk.PhotoImage(img)
+        except: 
+            return self.create_placeholder(f"ERROR LOADING\n{label}", w, h)
+
     def create_ui_elements(self):
         self.canvas.create_text(self.sw//2, 25, text="--- OBSERVATORY CONTROLS ---", fill="#FFCC00", font=("Arial", 12, "bold"))
         
@@ -85,6 +110,7 @@ class SumnerHUD:
         rx, ry = self.sw - box_w - 20, 40
         self.canvas.create_rectangle(rx, ry, rx + box_w, ry + box_h, fill='#050505', outline='#00FFCC', width=3)
         
+        # Sensor Layout
         y_off, spacing = ry + 45, box_h // 12.5
         self.val_sky   = self.add_sensor_line("🌡️", "SKY TEMP:", rx + 15, y_off, "#AAB7B8", box_w)
         self.val_cloud = self.add_sensor_line("☁️", "SKY COND:", rx + 15, y_off + spacing, "#5DADE2", box_w)
@@ -113,6 +139,7 @@ class SumnerHUD:
         self.rad_img_id = self.canvas.create_image(self.sw*0.53, self.sh*0.4, anchor='center', tags="zoom")
         self.clk_img_id = self.canvas.create_image(self.sw*0.38, self.sh*0.82, anchor='center', tags="zoom")
 
+        # Popout bindings restored
         self.canvas.tag_bind(self.all_img_id, "<Button-1>", lambda e: self.popout(self.path_allsky))
         self.canvas.tag_bind(self.rad_img_id, "<Button-1>", lambda e: self.popout(self.path_radar))
         self.canvas.tag_bind(self.clk_img_id, "<Button-1>", lambda e: self.popout(self.path_clock))
@@ -146,22 +173,20 @@ class SumnerHUD:
         d_win.attributes("-topmost", True)
         tk.Label(d_win, text="SYSTEM DOSSIER", bg="#050505", fg="#FFCC00", font=("Arial", 18, "bold")).pack(pady=10)
         
-        m_frame = tk.Frame(d_win, bg="#111")
-        m_frame.pack(fill="x", padx=20)
-        tk.Label(m_frame, text="Mirror Config:", bg="#111", fg="white").pack(side="left")
-        cfg_entry = tk.Entry(m_frame, bg="black", fg="cyan", insertbackground="white")
-        cfg_entry.pack(side="left", padx=10, fill="x", expand=True)
-        if os.path.exists(self.path_mirror_cfg):
-            with open(self.path_mirror_cfg, "r") as f: cfg_entry.insert(0, f.read().strip())
+        def create_entry(label_text, path, color="cyan"):
+            f = tk.Frame(d_win, bg="#111")
+            f.pack(fill="x", padx=20, pady=2)
+            tk.Label(f, text=label_text, bg="#111", fg="white", width=15, anchor="w").pack(side="left")
+            e = tk.Entry(f, bg="black", fg=color, insertbackground="white")
+            e.pack(side="left", padx=10, fill="x", expand=True)
+            if os.path.exists(path):
+                with open(path, "r") as file: e.insert(0, file.read().strip())
+            return e
 
-        # RADAR STATION ID INPUT
-        r_frame = tk.Frame(d_win, bg="#111")
-        r_frame.pack(fill="x", padx=20, pady=5)
-        tk.Label(r_frame, text="Radar Station:", bg="#111", fg="white").pack(side="left")
-        radar_entry = tk.Entry(r_frame, bg="black", fg="orange", insertbackground="white")
-        radar_entry.pack(side="left", padx=10, fill="x", expand=True)
-        if os.path.exists(self.path_radar_id):
-            with open(self.path_radar_id, "r") as f: radar_entry.insert(0, f.read().strip())
+        # Zip Entry removed
+        cfg_entry = create_entry("Mirror Config:", self.path_mirror_cfg)
+        rad_entry = create_entry("Radar Station:", self.path_radar_id, "orange")
+        csk_entry = create_entry("ClearSky ID:", self.path_csk_id, "#00FFCC")
 
         txt = scrolledtext.ScrolledText(d_win, bg="black", fg="#00FFCC", font=("Courier", 14), insertbackground="white")
         txt.pack(padx=20, pady=5, expand=True, fill='both')
@@ -170,8 +195,8 @@ class SumnerHUD:
         
         def save_all():
             with open(self.path_mirror_cfg, "w") as f: f.write(cfg_entry.get())
-            # Ensure the Radar ID is stripped of spaces and saved correctly
-            with open(self.path_radar_id, "w") as f: f.write(radar_entry.get().upper().strip())
+            with open(self.path_radar_id, "w") as f: f.write(rad_entry.get().upper().strip())
+            with open(self.path_csk_id, "w") as f: f.write(csk_entry.get().strip())
             with open(self.path_notes, 'w') as f: f.write(txt.get('1.0', 'end'))
             d_win.destroy()
 
@@ -180,14 +205,10 @@ class SumnerHUD:
                 with open(self.path_hours, "w") as f: f.write("0.0")
                 messagebox.showinfo("SUCCESS", "Timer Reset.")
 
-        def force_sync():
-            subprocess.Popen(["python3", self.path_sync_script])
-            messagebox.showinfo("SYNC", "Radar Sync Started...")
-
         btn_f = tk.Frame(d_win, bg="#050505")
         btn_f.pack(fill="x", side="bottom", pady=20)
         tk.Button(btn_f, text="♻ RESET", bg="#D4AC0D", fg="black", font=("Arial", 11, "bold"), command=reset_hrs).pack(side="left", padx=20)
-        tk.Button(btn_f, text="🔄 FORCE SYNC", bg="#4B0082", fg="white", font=("Arial", 11, "bold"), command=force_sync).pack(side="left", padx=10)
+        tk.Button(btn_f, text="🔄 SYNC", bg="#4B0082", fg="white", font=("Arial", 11, "bold"), command=lambda: subprocess.Popen(["python3", self.path_sync_script])).pack(side="left", padx=5)
         tk.Button(btn_f, text="💾 SAVE", bg="#1E8449", fg="white", font=("Arial", 11, "bold"), command=save_all).pack(side="right", padx=20)
 
     def check_cleaning_reminder(self):
@@ -204,38 +225,18 @@ class SumnerHUD:
             x, y = random.randint(0, self.sw), random.randint(0, self.sh)
             self.canvas.create_oval(x, y, x+1, y+1, fill='white', outline='white')
 
-    def load_scale(self, path, w, h):
-        if not os.path.exists(path): return None
-        try:
-            # FIX: Explicitly open and close the file to avoid lock issues
-            with Image.open(path) as raw_img:
-                img = raw_img.convert("RGB")
-                img.thumbnail((w, h), Image.Resampling.LANCZOS)
-                return ImageTk.PhotoImage(img)
-        except Exception as e: 
-            print(f"HUD Load Error ({path}): {e}")
-            return None
-
     def update_loop(self):
         img_w, img_h = int(self.sw * 0.28), int(self.sh * 0.45)
+        clk_w, clk_h = int(self.sw * 0.60), int(self.sh * 0.35)
+
+        self.img_all = self.load_scale(self.path_allsky, img_w, img_h, "AllSky")
+        self.canvas.itemconfig(self.all_img_id, image=self.img_all)
         
-        # 1. Update Allsky Image
-        new_all = self.load_scale(self.path_allsky, img_w, img_h)
-        if new_all: 
-            self.img_all = new_all # Keep reference to prevent GC
-            self.canvas.itemconfig(self.all_img_id, image=self.img_all)
+        self.img_rad = self.load_scale(self.path_radar, img_w, img_h, "Radar")
+        self.canvas.itemconfig(self.rad_img_id, image=self.img_rad)
         
-        # 2. Update Radar Image (This now swaps correctly)
-        new_rad = self.load_scale(self.path_radar, img_w, img_h)
-        if new_rad: 
-            self.img_rad = new_rad 
-            self.canvas.itemconfig(self.rad_img_id, image=self.img_rad)
-        
-        # 3. Update Clock Image
-        new_clk = self.load_scale(self.path_clock, int(self.sw*0.5), int(self.sh*0.35))
-        if new_clk: 
-            self.img_clk = new_clk
-            self.canvas.itemconfig(self.clk_img_id, image=self.img_clk)
+        self.img_clk = self.load_scale(self.path_clock, clk_w, clk_h, "ClearSky")
+        self.canvas.itemconfig(self.clk_img_id, image=self.img_clk)
 
         if os.path.exists(self.path_hours):
             try:
@@ -254,7 +255,6 @@ class SumnerHUD:
                         u_line = line.upper().strip()
                         if ":" not in u_line: continue
                         val = line.split(":", 1)[-1].strip()
-
                         if "SKY TEMP" in u_line: 
                             self.canvas.itemconfig(self.val_sky, text=val)
                             try: sky_t = float(''.join(c for c in val if c in '0123456789.-'))
@@ -267,16 +267,12 @@ class SumnerHUD:
                             self.canvas.itemconfig(self.val_hum, text=val)
                             try: hum_val = float(''.join(c for c in val if c in '0123456789.-'))
                             except: pass
-                        elif "PRES" in u_line:
+                        elif "PRESSURE" in u_line:
                             try:
                                 raw_p = float(''.join(c for c in val if c in '0123456789.-'))
-                                if raw_p > 0:
-                                    inches_p = raw_p * 0.02953
-                                    self.canvas.itemconfig(self.val_pres, text=f"{inches_p:.2f} in")
-                                else:
-                                    self.canvas.itemconfig(self.val_pres, text="LOW")
-                            except Exception as e: 
-                                self.canvas.itemconfig(self.val_pres, text=val)
+                                inches_p = raw_p * 0.02953
+                                self.canvas.itemconfig(self.val_pres, text=f"{inches_p:.2f} in")
+                            except: self.canvas.itemconfig(self.val_pres, text=val)
                         elif "WIND SPD" in u_line: self.canvas.itemconfig(self.val_wind, text=val)
                         elif "PRECIP" in u_line or "RAIN" in u_line: 
                             self.canvas.itemconfig(self.val_rain, text=val, fill="red" if "WET" in val.upper() else "cyan")
