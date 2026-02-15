@@ -1,65 +1,57 @@
-===============================================================================
-                    SUMNER GUARD: OBSERVATORY HUD SYSTEM 
-                          OFFICIAL TECHNICAL MANUAL
-===============================================================================
+=====================================================
+    SUMNER GUARD: OBSERVATORY HUD SYSTEM
+          OFFICIAL SETUP & INSTALLATION
+=====================================================
 
-1. SYSTEM OVERVIEW
-------------------
-Sumner Guard is a specialized Raspberry Pi 5 based Head-Up Display (HUD) 
-designed for astronomical observatory management. It provides real-time 
-environmental monitoring, sky imaging, and telescope hardware control.
+1. PREREQUISITES (Do these first!)
+-----------------------------------------------------
+* Hardware Wiring (Pi 5):
+  - ANEMOMETER: Brown (Signal) -> GPIO 4 | Blue (GND) -> Pin 9
+  - RAIN SENSOR: Signal -> GPIO 18
+  - I2C SENSORS: SDA -> GPIO 2 | SCL -> GPIO 3
 
-CORE FEATURES:
-- Real-time Allsky camera feed integration.
-- Dynamic NWS Weather Radar with dark-mode optimization.
-- **DYNAMIC LOCATION CLOCK**: Automatically fetches the ClearDarkSky clock 
-  and forecast chart based on your saved Zip Code.
-- Sensor telemetry (Sky Temp, Ambient, Humidity, Wind, Rain, Pressure).
-- One-touch telescope control (INDIGO Sky, Imager, Seestar Mirroring).
-- Google Sheets integration for long-term wind data logging.
-- 1,000-hour Maintenance/Cleaning reminder system.
+* Enable I2C:
+  - Run: sudo raspi-config
+  - Navigate to: Interface Options -> I2C -> Yes
+  - Finish and Exit.
 
-2. HARDWARE WIRING SPECIFICATIONS (Raspberry Pi 5)
---------------------------------------------------
+2. ESSENTIAL FILE LIST (Clean up your folder!)
+-----------------------------------------------------
+Keep ONLY these files in /home/pi/allsky_guard to avoid conflicts:
 
-ANEMOMETER (Wind Speed):
-- **Brown Wire (Signal)**: GPIO 4 (Physical Pin 7)
-- **Blue Wire (Ground)**:  GND (Physical Pin 9)
-* Note: Software enables internal pull-up; no external resistor required.
+- hud.py              (Main Dashboard)
+- install.sh          (Setup Script)
+- get_radar.py        (Sync Engine)
+- sensor_worker.py    (Primary Data Collector)
+- guard.py            (Connection Monitor)
+- master_monitor.py   (Safety Engine)
+- close_dome.sh       (Hardware Relay Trigger)
+- sumner_sync.service (Systemd automation)
+- sumner_sync.timer   (Hourly schedule)
 
-BME280 (Ambient Temp/Hum/Pres) & MLX90614 (Sky Temp):
-- VCC: 3.3V (Physical Pin 1)
-- GND: Ground (Physical Pin 6)
-- SDA: GPIO 2 (Physical Pin 3)
-- SCL: GPIO 3 (Physical Pin 5)
+*NOTE: You can delete update_sensors.py, wind_sensor.py, and 
+rain_watcher.py as they are now merged into sensor_worker.py.
 
-RAIN SENSOR:
-- Signal: GPIO 17 (Physical Pin 11)
-- GND:    Physical Pin 14
+3. GITHUB INSTALLATION COMMANDS
+-----------------------------------------------------
+Open your terminal and run these in order:
 
-3. DYNAMIC LOCATION & SYNC
---------------------------
-The HUD no longer relies on hardcoded image links for specific cities. 
+cd /home/pi
+git clone https://github.com/bsbachert/Sumner_Guard.git allsky_guard
+cd allsky_guard
+chmod +x install.sh
+./install.sh
 
-TO SET YOUR LOCATION:
-1. Open the **MAINT / DOSSIER** window on the HUD.
-2. Enter your **ZIP CODE** in the provided field.
-3. Click **SAVE**.
-4. Click **FORCE SYNC**. 
+4. POST-INSTALLATION
+-----------------------------------------------------
+1. REBOOT the Pi: sudo reboot
+2. Launch HUD (if it doesn't auto-boot).
+3. Open MAINT / DOSSIER.
+4. Enter Radar ID (e.g., KTBW) and ClearSky ID (e.g., TampFL).
+5. Click SAVE then click SYNC.
 
-The system will use your Zip Code to calculate coordinates and download the 
-exact astronomical clock and forecast chart for your position.
-
-4. MAINTENANCE & ALERTS
------------------------
-- **Cleaning Reminder**: A popup will trigger every 1,000 operational hours 
-  to remind you to clean the dome and sensors.
-- **Resetting**: After cleaning, use the **RESET** button in the Dossier 
-  window to clear the timer back to zero.
-
-5. TROUBLESHOOTING
-------------------
-- **Missing Clock**: Ensure the `geopy` library is installed (`pip3 install geopy`).
-- **Radar Fail**: Verify your 4-letter Station ID in the Dossier (e.g., KGRR).
-- **Sensors "--"**: Check I2C wiring or run `sudo i2cdetect -y 1`.
-===============================================================================
+5. MAINTENANCE LOGIC
+-----------------------------------------------------
+- Cleaning Alert: Triggers automatically at 1,000 hours.
+- Resetting: Use the RESET button in the Dossier after cleaning.
+=====================================================

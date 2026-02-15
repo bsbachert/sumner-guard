@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Sumner Sync every hour
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1h
+Unit=sumner_sync.service
+
+[Install]
+WantedBy=timers.target

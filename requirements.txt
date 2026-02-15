@@ -1,5 +1,0 @@
-Pillow
-requests
-smbus2
-RPi.GPIO
-RPi.bme280

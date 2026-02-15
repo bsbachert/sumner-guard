@@ -1,0 +1,8 @@
+[Unit]
+Description=Sumner Guard Radar and ClearSky Sync
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/allsky_guard/get_radar.py
