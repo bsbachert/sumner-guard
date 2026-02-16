@@ -1,58 +1,74 @@
 =====================================================
-    SUMNER GUARD: OBSERVATORY HUD SYSTEM
-          OFFICIAL SETUP & INSTALLATION
+    SUMNER GUARD: INSTALLATION GUIDE
 =====================================================
 
-1. HARDWARE PREREQUISITES (Pi 5 Wiring)
+1. SOFTWARE PREREQUISITES (Run these first!)
 -----------------------------------------------------
-* ANEMOMETER: Brown (Signal) -> GPIO 4 | Blue (GND) -> Pin 9
-* RAIN SENSOR: Signal -> GPIO 18
-* I2C SENSORS: SDA -> GPIO 2 | SCL -> GPIO 3
+* Update the system:
+  sudo apt-get update
 
+* Install Critical System Libraries:
+  (Required for the HUD UI, Math, and I2C sensors)
+  sudo apt-get install -y python3-tk python3-pil python3-pil.imagetk \
+  libatlas-base-dev git gio-bin raspi-config python3-requests \
+  python3-rpi.gpio python3-smbus2
 
+* Force Install Python Packages:
+  (Required for the Pi 5 / Bookworm OS environment)
+  pip3 install Pillow RPi.bme280 --break-system-packages
 
-2. SOFTWARE PREREQUISITES (System Configuration)
+2. CLONE REPOSITORY (No Password Required)
 -----------------------------------------------------
-Before running the installer, run these commands manually:
+* Use the HTTPS link to avoid username/password prompts.
+  Make sure your repo is set to "Public" on GitHub.
+  
+  cd /home/pi
+  git clone https://github.com/bsbachert/Sumner_Guard.git allsky_guard
 
-* Enable I2C Interface:
-  - Run: sudo raspi-config
-  - Navigate to: Interface Options -> I2C -> Yes
-  - Finish and Reboot.
-
-* Update Package List:
-  - Run: sudo apt-get update
-
-* Install System Libraries (Required for UI and Math):
-  - Run: sudo apt-get install -y python3-tk python3-pil python3-pil.imagetk \
-         libatlas-base-dev gio-bin git
-
-3. THE ESSENTIAL FILE LIST
+3. HARDWARE CONFIG (Pi 5 Pins)
 -----------------------------------------------------
-Keep ONLY these files in /home/pi/allsky_guard:
+* Enable I2C: sudo raspi-config -> Interface -> I2C -> Yes
+* Wiring Checklist: 
+  - ANEMOMETER: Brown (Pin 7/GPIO 4) | Blue (Pin 9/GND)
+  - RAIN SENSOR: Signal -> GPIO 18 (Pin 12)
+  - I2C (BME/MLX): SDA (Pin 3) | SCL (Pin 5)
 
-- hud.py              (Main Dashboard UI)
-- install.sh          (Automated Installer)
-- get_radar.py        (Image Sync Engine)
-- sensor_worker.py    (Primary Data Collector)
-- guard.py            (Connection Monitor)
-- master_monitor.py   (Safety Engine)
-- close_dome.sh       (Hardware Relay Trigger)
-- sumner_sync.service (Systemd automation)
-- sumner_sync.timer   (Hourly schedule)
 
-4. GITHUB INSTALLATION COMMANDS
+
+4. RUN AUTOMATED INSTALLER
 -----------------------------------------------------
-cd /home/pi
-git clone https://github.com/bsbachert/Sumner_Guard.git allsky_guard
-cd allsky_guard
+cd /home/pi/allsky_guard
 chmod +x install.sh
 ./install.sh
 
-5. FINAL HUD CONFIGURATION
+5. FIRST BOOT & SYNC
 -----------------------------------------------------
-1. Reboot: sudo reboot
+1. sudo reboot
 2. Open HUD -> Click [MAINT / DOSSIER]
-3. Enter Radar ID (Examples are (KGRR) and ClearSky ID (HwkHlObMI)
-4. Click [SAVE] then [SYNC].
+3. Enter Radar ID (e.g., KTBW) and ClearSky ID (e.g., TampFL)
+4. Click [SAVE] then click [SYNC].
+
+=====================================================
+                 PROJECT OVERVIEW
+=====================================================
+Sumner Guard is a specialized Raspberry Pi 5 Head-Up 
+Display (HUD) for astronomical observatory management.
+
+CORE CAPABILITIES:
+* TELEMETRY: Real-time monitoring of Sky Temp, Ambient 
+  Temp, Humidity, Pressure, Wind Speed, and Rain detection.
+* SAFETY: Automated fail-safes (via guard.py) that 
+  monitor internet heartbeats and Seestar connectivity 
+  to trigger emergency roof closure if needed.
+* IMAGING: Live integration of AllSky camera feeds, 
+  NWS Doppler Radar, and ClearDarkSky astronomical clocks.
+* MAINTENANCE: A smart tracking system that logs 
+  operational hours and triggers a "Cleaning Reminder" 
+  every 1,000 hours to ensure optical clarity.
+* CONTROL: Rapid-launch buttons for INDIGO Sky, 
+  Imager, and Seestar mobile mirroring.
+
+The system is designed to be the "Single Source of Truth" 
+for your observatory, ensuring both hardware safety 
+and environmental awareness at a glance.
 =====================================================
