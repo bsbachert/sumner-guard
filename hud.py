@@ -26,9 +26,9 @@ class SumnerHUD:
         self.path_sensors = "/home/pi/allsky_guard/sensors.txt"
         self.path_hours = "/home/pi/allsky_guard/hours.txt"
         self.path_notes = "/home/pi/allsky_guard/dossier.txt"
-        self.path_mirror_cfg = "/home/pi/allsky_guard/mirror_config.txt"
         self.path_thresh = "/home/pi/allsky_guard/cloud_threshold.txt"
         self.path_seestar_ip = "/home/pi/allsky_guard/seestar_ip.txt"
+        self.path_fingerbot_mac = "/home/pi/allsky_guard/fingerbot_mac.txt"
         
         # ID Paths
         self.path_radar_id = "/home/pi/allsky_guard/radar_coords.txt"
@@ -61,6 +61,33 @@ class SumnerHUD:
         self.check_cleaning_reminder()
         self.update_loop()
 
+    def trigger_fingerbot(self):
+        """Bluetooth trigger for Seestar Power Button"""
+        if not os.path.exists(self.path_fingerbot_mac):
+            messagebox.showerror("ERROR", "Set Fingerbot MAC in Dossier.")
+            return
+        with open(self.path_fingerbot_mac, "r") as f:
+            mac = f.read().strip()
+        
+        # Command to trigger Fingerbot 'Push'
+        cmd = f"gatttool -b {mac} --char-write-req -a 0x0016 -n 01"
+        try:
+            subprocess.Popen(cmd.split())
+            self.power_btn.config(bg="red", text="⚡ SENDING...")
+            self.root.after(2000, lambda: self.power_btn.config(bg="#900", text="⚡ SEESTAR"))
+        except:
+            messagebox.showerror("BT ERROR", "Check Bluetooth service on Pi.")
+
+    def get_connection_type(self):
+        try:
+            ips = subprocess.check_output("hostname -I", shell=True).decode().split()
+            for ip in ips:
+                if ip.startswith("100."):
+                    return "REMOTE (VPN)", "orange"
+            return "LOCAL (WiFi)", "lightgreen"
+        except:
+            return "UNKNOWN", "gray"
+
     def update_threshold(self, val):
         self.cloud_threshold = float(val)
         try:
@@ -70,18 +97,6 @@ class SumnerHUD:
 
     def toggle_roof(self):
         messagebox.showinfo("ROOF CONTROL", "Roof Command Sent")
-
-    def launch_seestar(self):
-        w, h, x, y = "450", "900", "100", "100"
-        if os.path.exists(self.path_mirror_cfg):
-            try:
-                with open(self.path_mirror_cfg, "r") as f:
-                    coords = f.read().strip().split(',')
-                    if len(coords) == 4: w, h, x, y = coords
-            except: pass
-        subprocess.Popen(["/snap/bin/scrcpy", "--always-on-top", "--window-title", "Seestar Live",
-               "--max-size", "1920", "--video-bit-rate", "4M", "--max-fps", "30",
-               "--window-x", x, "--window-y", y, "--window-width", w, "--window-height", h])
 
     def create_placeholder(self, text, w, h):
         img = Image.new('RGB', (w, h), color=(15, 15, 15))
@@ -102,13 +117,22 @@ class SumnerHUD:
             return self.create_placeholder(f"ERROR LOADING\n{label}", w, h)
 
     def create_ui_elements(self):
+        # Header Area
         self.canvas.create_text(self.sw//2, 25, text="--- OBSERVATORY CONTROLS ---", fill="#FFCC00", font=("Arial", 12, "bold"))
         
-        # Center the Seestar button
-        tk.Button(self.root, text="📱 SEESTAR (V40)", bg="#4B0082", fg="white", font=("Arial", 9, "bold"), command=self.launch_seestar).place(x=self.sw//2 - 60, y=45)
-        
+        # Relocated Roof Control
+        self.roof_btn = tk.Button(self.root, text="OPEN / CLOSE ROOF", bg="#500", fg="white", activebackground="red", font=("Arial", 9, "bold"), command=self.toggle_roof)
+        self.roof_btn.place(x=self.sw//2 - 75, y=50, width=150)
+
+        # Network Status Display
+        self.net_status_text = self.canvas.create_text(self.sw - 20, 20, text="NET: CHECKING...", font=("Arial", 10, "bold"), fill="cyan", anchor="ne")
+
+        # Top Action Buttons
         tk.Button(self.root, text="MAINT / DOSSIER", command=self.open_dossier, bg="#222", fg="white", font=("Arial", 9, "bold")).place(x=20, y=20)
         tk.Button(self.root, text="EXIT HUD", command=self.root.destroy, bg="#500", fg="white", font=("Arial", 9, "bold")).place(x=150, y=20)
+        
+        self.power_btn = tk.Button(self.root, text="⚡ SEESTAR", command=self.trigger_fingerbot, bg="#900", fg="white", font=("Arial", 9, "bold"))
+        self.power_btn.place(x=250, y=20)
 
         box_w, box_h = int(self.sw * 0.25), int(self.sh * 0.85)
         rx, ry = self.sw - box_w - 20, 40
@@ -132,10 +156,7 @@ class SumnerHUD:
         self.val_rain  = self.add_sensor_line("☔", "RAIN DET:", rx + 15, y_mid + spacing*5, "#AF7AC5", box_w)
         self.val_dome  = self.add_sensor_line("🏠", "ROOF STAT:", rx + 15, y_mid + spacing*6, "#EB984E", box_w)
         
-        self.roof_btn = tk.Button(self.root, text="OPEN / CLOSE ROOF", bg="#500", fg="white", activebackground="red", font=("Arial", 8, "bold"), command=self.toggle_roof)
-        self.roof_btn.place(x=rx + 55, y=y_mid + spacing*6 + 22, width=box_w - 80)
-
-        # Added Alpaca Link indicator
+        # Alpaca and Timer
         y_bot = y_mid + spacing*8
         self.val_alpaca = self.add_sensor_line("🔭", "ALPACA LINK:", rx + 15, y_bot - spacing, "#00FF00", box_w)
         self.val_hrs   = self.add_sensor_line("⌛", "OP HOURS:", rx + 15, y_bot, "#FFCC00", box_w)
@@ -188,10 +209,10 @@ class SumnerHUD:
                 with open(path, "r") as file: e.insert(0, file.read().strip())
             return e
 
-        cfg_entry = create_entry("Mirror Config:", self.path_mirror_cfg)
         rad_entry = create_entry("Radar Station:", self.path_radar_id, "orange")
         csk_entry = create_entry("ClearSky ID:", self.path_csk_id, "#00FFCC")
         ip_entry  = create_entry("Seestar IP:", self.path_seestar_ip, "#FF33FF")
+        bt_entry  = create_entry("Fingerbot MAC:", self.path_fingerbot_mac, "#FFCC00")
 
         txt = scrolledtext.ScrolledText(d_win, bg="black", fg="#00FFCC", font=("Courier", 14), insertbackground="white")
         txt.pack(padx=20, pady=5, expand=True, fill='both')
@@ -199,10 +220,10 @@ class SumnerHUD:
             with open(self.path_notes, "r") as f: txt.insert('1.0', f.read())
         
         def save_all():
-            with open(self.path_mirror_cfg, "w") as f: f.write(cfg_entry.get())
             with open(self.path_radar_id, "w") as f: f.write(rad_entry.get().upper().strip())
             with open(self.path_csk_id, "w") as f: f.write(csk_entry.get().strip())
             with open(self.path_seestar_ip, "w") as f: f.write(ip_entry.get().strip())
+            with open(self.path_fingerbot_mac, "w") as f: f.write(bt_entry.get().strip())
             with open(self.path_notes, 'w') as f: f.write(txt.get('1.0', 'end'))
             self.seestar_ip = ip_entry.get().strip()
             d_win.destroy()
@@ -233,13 +254,11 @@ class SumnerHUD:
             self.canvas.create_oval(x, y, x+1, y+1, fill='white', outline='white')
 
     def check_alpaca_status(self):
-        if not self.seestar_ip or self.seestar_ip == "0.0.0.0":
-            return False
+        if not self.seestar_ip or self.seestar_ip == "0.0.0.0": return False
         try:
             with socket.create_connection((self.seestar_ip, 32323), timeout=0.5):
                 return True
-        except:
-            return False
+        except: return False
 
     def update_loop(self):
         img_w, img_h = int(self.sw * 0.28), int(self.sh * 0.45)
@@ -247,14 +266,14 @@ class SumnerHUD:
 
         self.img_all = self.load_scale(self.path_allsky, img_w, img_h, "AllSky")
         self.canvas.itemconfig(self.all_img_id, image=self.img_all)
-        
         self.img_rad = self.load_scale(self.path_radar, img_w, img_h, "Radar")
         self.canvas.itemconfig(self.rad_img_id, image=self.img_rad)
-        
         self.img_clk = self.load_scale(self.path_clock, clk_w, clk_h, "ClearSky")
         self.canvas.itemconfig(self.clk_img_id, image=self.img_clk)
 
-        # Update Alpaca Status
+        net_stat, net_col = self.get_connection_type()
+        self.canvas.itemconfig(self.net_status_text, text=f"NET: {net_stat}", fill=net_col)
+        
         alpaca_on = self.check_alpaca_status()
         self.canvas.itemconfig(self.val_alpaca, text="ONLINE" if alpaca_on else "OFFLINE", fill="#00FF00" if alpaca_on else "#FF3333")
 
@@ -293,8 +312,8 @@ class SumnerHUD:
                                 inches_p = raw_p * 0.02953
                                 self.canvas.itemconfig(self.val_pres, text=f"{inches_p:.2f} in")
                             except: self.canvas.itemconfig(self.val_pres, text=val)
-                        elif "WIND SPD" in u_line: self.canvas.itemconfig(self.val_wind, text=val)
-                        elif "PRECIP" in u_line or "RAIN" in u_line: 
+                        elif "WIND" in u_line: self.canvas.itemconfig(self.val_wind, text=val)
+                        elif "RAIN" in u_line or "PRECIP" in u_line: 
                             self.canvas.itemconfig(self.val_rain, text=val, fill="red" if "WET" in val.upper() else "cyan")
                         elif "DOME" in u_line or "ROOF" in u_line: 
                             self.canvas.itemconfig(self.val_dome, text=val)
