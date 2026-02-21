@@ -330,7 +330,7 @@ class SumnerHUD:
                     self.canvas.itemconfig(self.val_dew, text=f"{dew_f:.1f} F")
             except Exception as e: print(f"Parser Error: {e}")
 
-        self.root.after(5000, self.update_loop)
+        self.root.after(1000, self.update_loop)
 
 if __name__ == "__main__":
     root = tk.Tk()
