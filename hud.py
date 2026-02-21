@@ -5,6 +5,7 @@ import os, subprocess, random, math, sys, fcntl, socket
 from datetime import datetime
 
 # --- SINGLE INSTANCE SHIELD ---
+# If the HUD won't open, run: rm /tmp/sumner_hud.lock
 try:
     lock_file = open('/tmp/sumner_hud.lock', 'w')
     fcntl.lockf(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -29,6 +30,7 @@ class SumnerHUD:
         self.path_thresh = "/home/pi/allsky_guard/cloud_threshold.txt"
         self.path_seestar_ip = "/home/pi/allsky_guard/seestar_ip.txt"
         self.path_fingerbot_mac = "/home/pi/allsky_guard/fingerbot_mac.txt"
+        self.path_roof_cmd = "/home/pi/allsky_guard/roof_cmd.txt"
         
         # ID Paths
         self.path_radar_id = "/home/pi/allsky_guard/radar_coords.txt"
@@ -61,6 +63,18 @@ class SumnerHUD:
         self.check_cleaning_reminder()
         self.update_loop()
 
+    def manual_open(self):
+        """Send manual open command to background worker"""
+        with open(self.path_roof_cmd, "w") as f:
+            f.write("OPEN")
+        messagebox.showinfo("ROOF", "Manual OPEN command sent.")
+
+    def manual_close(self):
+        """Send manual close command to background worker"""
+        with open(self.path_roof_cmd, "w") as f:
+            f.write("CLOSE")
+        messagebox.showinfo("ROOF", "Manual CLOSE command sent.")
+
     def trigger_fingerbot(self):
         """Bluetooth trigger for Seestar Power Button"""
         if not os.path.exists(self.path_fingerbot_mac):
@@ -69,7 +83,6 @@ class SumnerHUD:
         with open(self.path_fingerbot_mac, "r") as f:
             mac = f.read().strip()
         
-        # Command to trigger Fingerbot 'Push'
         cmd = f"gatttool -b {mac} --char-write-req -a 0x0016 -n 01"
         try:
             subprocess.Popen(cmd.split())
@@ -95,9 +108,6 @@ class SumnerHUD:
                 f.write(str(self.cloud_threshold))
         except: pass
 
-    def toggle_roof(self):
-        messagebox.showinfo("ROOF CONTROL", "Roof Command Sent")
-
     def create_placeholder(self, text, w, h):
         img = Image.new('RGB', (w, h), color=(15, 15, 15))
         draw = ImageDraw.Draw(img)
@@ -120,9 +130,12 @@ class SumnerHUD:
         # Header Area
         self.canvas.create_text(self.sw//2, 25, text="--- OBSERVATORY CONTROLS ---", fill="#FFCC00", font=("Arial", 12, "bold"))
         
-        # Relocated Roof Control
-        self.roof_btn = tk.Button(self.root, text="OPEN / CLOSE ROOF", bg="#500", fg="white", activebackground="red", font=("Arial", 9, "bold"), command=self.toggle_roof)
-        self.roof_btn.place(x=self.sw//2 - 75, y=50, width=150)
+        # Dual Roof Control Buttons
+        self.btn_open = tk.Button(self.root, text="OPEN ROOF", bg="#1E8449", fg="white", font=("Arial", 9, "bold"), command=self.manual_open)
+        self.btn_open.place(x=self.sw//2 - 110, y=50, width=100)
+
+        self.btn_close = tk.Button(self.root, text="CLOSE ROOF", bg="#922B21", fg="white", font=("Arial", 9, "bold"), command=self.manual_close)
+        self.btn_close.place(x=self.sw//2 + 10, y=50, width=100)
 
         # Network Status Display
         self.net_status_text = self.canvas.create_text(self.sw - 20, 20, text="NET: CHECKING...", font=("Arial", 10, "bold"), fill="cyan", anchor="ne")
@@ -288,7 +301,8 @@ class SumnerHUD:
 
         if os.path.exists(self.path_sensors):
             try:
-                sky_t, amb_t, hum_val = None, None, None
+                sky_t, amb_t, hum_val, wind_val = None, None, None, None
+                is_wet = False
                 with open(self.path_sensors, "r") as f:
                     for line in f:
                         u_line = line.upper().strip()
@@ -312,22 +326,50 @@ class SumnerHUD:
                                 inches_p = raw_p * 0.02953
                                 self.canvas.itemconfig(self.val_pres, text=f"{inches_p:.2f} in")
                             except: self.canvas.itemconfig(self.val_pres, text=val)
-                        elif "WIND" in u_line: self.canvas.itemconfig(self.val_wind, text=val)
+                        elif "WIND" in u_line: 
+                            self.canvas.itemconfig(self.val_wind, text=val)
+                            try: wind_val = float(''.join(c for c in val if c in '0123456789.-'))
+                            except: pass
                         elif "RAIN" in u_line or "PRECIP" in u_line: 
-                            self.canvas.itemconfig(self.val_rain, text=val, fill="red" if "WET" in val.upper() else "cyan")
-                        elif "DOME" in u_line or "ROOF" in u_line: 
-                            self.canvas.itemconfig(self.val_dome, text=val)
+                            is_wet = "WET" in val.upper()
+                            self.canvas.itemconfig(self.val_rain, text=val, fill="red" if is_wet else "cyan")
 
-                if sky_t is not None and amb_t is not None:
-                    delta = amb_t - sky_t
-                    status = "CLEAR" if delta > self.cloud_threshold else "CLOUDY"
-                    self.canvas.itemconfig(self.val_cloud, text=status, fill="lightgreen" if status == "CLEAR" else "orange")
+                # Safety Logic Calculations
+                delta = (amb_t - sky_t) if (amb_t is not None and sky_t is not None) else 0
+                is_clear = delta > self.cloud_threshold
+                self.canvas.itemconfig(self.val_cloud, text="CLEAR" if is_clear else "CLOUDY", fill="lightgreen" if is_clear else "orange")
                 
+                dew_f = 0
                 if amb_t is not None and hum_val is not None:
                     T = (amb_t - 32) * 5/9
                     gamma = (math.log(hum_val/100) + ((17.27 * T) / (237.3 + T)))
                     dew_f = ((237.3 * gamma) / (17.27 - gamma) * 9/5) + 32
                     self.canvas.itemconfig(self.val_dew, text=f"{dew_f:.1f} F")
+
+                # Extreme Dew Check: Ambient is within 3 degrees of Dew Point
+                extreme_dew = (amb_t - dew_f) < 3 if amb_t is not None else False
+                wind_safe = wind_val < 15 if wind_val is not None else False
+                
+                # Master Safety Assessment
+                if is_clear and not is_wet and wind_safe and not extreme_dew:
+                    roof_text = "SAFE TO OPEN"
+                    roof_color = "lightgreen"
+                else:
+                    reasons = []
+                    if is_wet: reasons.append("RAIN")
+                    if not is_clear: reasons.append("CLOUDY")
+                    if not wind_safe: reasons.append("WIND")
+                    if extreme_dew: reasons.append("DEW")
+                    roof_text = f"UNSAFE: {', '.join(reasons)}" if reasons else "UNSAFE"
+                    roof_color = "red"
+                    
+                    # Emergency Close: Force CLOSE if Rain or High Wind (>20mph)
+                    if is_wet or (wind_val is not None and wind_val > 20):
+                        with open(self.path_roof_cmd, "w") as f:
+                            f.write("CLOSE")
+
+                self.canvas.itemconfig(self.val_dome, text=roof_text, fill=roof_color)
+
             except Exception as e: print(f"Parser Error: {e}")
 
         self.root.after(1000, self.update_loop)
