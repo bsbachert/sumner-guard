@@ -100,8 +100,6 @@ class SumnerHUD:
 
     def run_health_check(self):
         report = []
-        
-        # 1. Check Sensor Worker Vitality
         if os.path.exists(self.path_sensors):
             mtime = os.path.getmtime(self.path_sensors)
             if (datetime.now().timestamp() - mtime) < 30:
@@ -111,7 +109,6 @@ class SumnerHUD:
         else:
             report.append("❌ SENSORS: Missing sensors.txt")
 
-        # 2. Check Bluetooth Visibility for SwitchBot
         try:
             bt_check = subprocess.check_output(["bluetoothctl", "devices"], text=True)
             if "E1:6A:83:06:38:48" in bt_check:
@@ -121,9 +118,7 @@ class SumnerHUD:
         except:
             report.append("❌ BLUETOOTH: Controller error")
 
-        # 3. Check I2C Bus (BME280 & MLX)
         try:
-            # Note: Pi 5 uses i2c-1 for standard pins
             i2c_check = subprocess.check_output(["i2cdetect", "-y", "1"], text=True)
             if "76" in i2c_check and "5a" in i2c_check:
                 report.append("✅ I2C BUS: All sensors detected (0x76, 0x5A)")
@@ -189,7 +184,6 @@ class SumnerHUD:
         self.btn_control = tk.Button(self.root, text="🔭 CONTROL", bg="#2874A6", fg="white", font=("Arial", 9, "bold"), command=self.open_browser)
         self.btn_control.place(x=350, y=20, width=100)
 
-        # Health Check Button integration
         self.btn_health = tk.Button(self.root, text="🩺 SYSTEM CHECK", bg="#5D6D7E", fg="white", font=("Arial", 9, "bold"), command=self.run_health_check)
         self.btn_health.place(x=470, y=20, width=120)
 
@@ -197,7 +191,7 @@ class SumnerHUD:
         rx, ry = self.sw - box_w - 20, 40
         self.canvas.create_rectangle(rx, ry, rx + box_w, ry + box_h, fill='#050505', outline='#00FFCC', width=3)
         
-        y_off, spacing = ry + 45, box_h // 12.5
+        y_off, spacing = ry + 45, box_h // 13.5
         self.val_sky   = self.add_sensor_line("🌡️", "SKY TEMP:", rx + 15, y_off, "#AAB7B8", box_w)
         self.val_cloud = self.add_sensor_line("☁️", "SKY COND:", rx + 15, y_off + spacing, "#5DADE2", box_w)
         
@@ -209,12 +203,16 @@ class SumnerHUD:
         self.val_amb   = self.add_sensor_line("🌡️", "AMB TEMP:", rx + 15, y_mid, "#EC7063", box_w)
         self.val_hum   = self.add_sensor_line("💧", "HUMIDITY:", rx + 15, y_mid + spacing, "#5499C7", box_w)
         self.val_dew   = self.add_sensor_line("✨", "DEW POINT:", rx + 15, y_mid + spacing*2, "#A569BD", box_w)
-        self.val_pres  = self.add_sensor_line("⏲️", "PRESSURE:", rx + 15, y_mid + spacing*3, "#58D68D", box_w)
-        self.val_wind  = self.add_sensor_line("💨", "WIND SPD:", rx + 15, y_mid + spacing*4, "#F4D03F", box_w)
-        self.val_rain  = self.add_sensor_line("☔", "RAIN DET:", rx + 15, y_mid + spacing*5, "#AF7AC5", box_w)
-        self.val_dome  = self.add_sensor_line("🏠", "ROOF STAT:", rx + 15, y_mid + spacing*6, "#EB984E", box_w)
         
-        y_bot = y_mid + spacing*8
+        # --- ADDED HEATER LINE ---
+        self.val_heat  = self.add_sensor_line("🔥", "DEW HEAT:", rx + 15, y_mid + spacing*3, "#FF5733", box_w)
+        
+        self.val_pres  = self.add_sensor_line("⏲️", "PRESSURE:", rx + 15, y_mid + spacing*4, "#58D68D", box_w)
+        self.val_wind  = self.add_sensor_line("💨", "WIND SPD:", rx + 15, y_mid + spacing*5, "#F4D03F", box_w)
+        self.val_rain  = self.add_sensor_line("☔", "RAIN DET:", rx + 15, y_mid + spacing*6, "#AF7AC5", box_w)
+        self.val_dome  = self.add_sensor_line("🏠", "ROOF STAT:", rx + 15, y_mid + spacing*7, "#EB984E", box_w)
+        
+        y_bot = y_mid + spacing*9
         self.val_alpaca = self.add_sensor_line("🔭", "ALPACA LINK:", rx + 15, y_bot - spacing, "#00FF00", box_w)
         self.val_hrs   = self.add_sensor_line("⌛", "OP HOURS:", rx + 15, y_bot, "#FFCC00", box_w)
         self.sync_light = self.canvas.create_oval(rx + 15, y_bot - 8, rx + 31, y_bot + 8, fill="gray", outline="white")
@@ -239,10 +237,7 @@ class SumnerHUD:
         pop.attributes("-fullscreen", True, "-topmost", True)
         pop.config(bg='black')
         pop.bind("<Destroy>", self.reset_hud_scaling)
-        
         img = Image.open(path)
-        
-        # INCREASED SCALE FOR ALLSKY FEED
         if "latest.jpg" in path.lower():
             img.thumbnail((int(self.sw * 0.95), int(self.sh * 0.95)), Image.Resampling.LANCZOS)
         elif "radar" in path.lower():
@@ -252,7 +247,6 @@ class SumnerHUD:
             img = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
         else:
             img.thumbnail((int(self.sw * 0.8), int(self.sh * 0.8)), Image.Resampling.LANCZOS)
-            
         self.p_img = ImageTk.PhotoImage(img)
         tk.Button(pop, image=self.p_img, bg='black', bd=0, activebackground='black', command=pop.destroy).pack(expand=True)
 
@@ -264,15 +258,11 @@ class SumnerHUD:
         d_win.config(bg="#050505")
         d_win.attributes("-topmost", True)
         d_win.bind("<Destroy>", self.reset_hud_scaling)
-
         d_win.grid_rowconfigure(2, weight=1)
         d_win.grid_columnconfigure(0, weight=1)
-
         tk.Label(d_win, text="SYSTEM DOSSIER", bg="#050505", fg="#FFCC00", font=("Arial", 18, "bold")).grid(row=0, column=0, pady=10)
-        
         entry_frame = tk.Frame(d_win, bg="#050505")
         entry_frame.grid(row=1, column=0, sticky="ew", padx=20)
-        
         def create_entry(label_text, path, color="cyan"):
             f = tk.Frame(entry_frame, bg="#111")
             f.pack(fill="x", pady=2)
@@ -282,17 +272,14 @@ class SumnerHUD:
             if os.path.exists(path):
                 with open(path, "r") as file: e.insert(0, file.read().strip())
             return e
-
         rad_entry = create_entry("Radar Station:", self.path_radar_id, "orange")
         csk_entry = create_entry("ClearSky ID:", self.path_csk_id, "#00FFCC")
         ip_entry  = create_entry("Seestar IP:", self.path_seestar_ip, "#FF33FF")
         bt_entry  = create_entry("Fingerbot MAC:", self.path_fingerbot_mac, "#FFCC00")
-
         txt = scrolledtext.ScrolledText(d_win, bg="black", fg="#00FFCC", font=("Courier", 14), insertbackground="white")
         txt.grid(row=2, column=0, sticky="nsew", padx=20, pady=5)
         if os.path.exists(self.path_notes):
             with open(self.path_notes, "r") as f: txt.insert('1.0', f.read())
-        
         def save_all():
             with open(self.path_radar_id, "w") as f: f.write(rad_entry.get().upper().strip())
             with open(self.path_csk_id, "w") as f: f.write(csk_entry.get().strip())
@@ -301,20 +288,16 @@ class SumnerHUD:
             with open(self.path_notes, 'w') as f: f.write(txt.get('1.0', 'end'))
             self.seestar_ip = ip_entry.get().strip()
             d_win.destroy()
-
         def reset_hrs():
             if messagebox.askyesno("RESET", "Reset Maintenance Timer to 0?"):
                 with open(self.path_hours, "w") as f: f.write("0.0")
                 messagebox.showinfo("SUCCESS", "Timer Reset.")
-
         btn_f = tk.Frame(d_win, bg="#050505")
         btn_f.grid(row=3, column=0, sticky="ew", pady=(10, 20))
-        
         tk.Button(btn_f, text="♻ RESET", bg="#D4AC0D", fg="black", font=("Arial", 11, "bold"), command=reset_hrs).pack(side="left", padx=20)
         tk.Button(btn_f, text="🔄 SYNC", bg="#4B0082", fg="white", font=("Arial", 11, "bold"), command=lambda: subprocess.Popen(["python3", self.path_sync_script])).pack(side="left", padx=5)
         tk.Button(btn_f, text="🤖 TEST BOT", bg="orange", fg="black", font=("Arial", 11, "bold"), command=self.trigger_fingerbot).pack(side="left", padx=5)
         tk.Button(btn_f, text="💾 SAVE", bg="#1E8449", fg="white", font=("Arial", 11, "bold"), command=save_all).pack(side="right", padx=20)
-
         d_win.update()
 
     def check_cleaning_reminder(self):
@@ -341,20 +324,16 @@ class SumnerHUD:
     def update_loop(self):
         img_w, img_h = int(self.sw * 0.28), int(self.sh * 0.45)
         clk_w, clk_h = int(self.sw * 0.60), int(self.sh * 0.35)
-
         self.img_all = self.load_scale(self.path_allsky, img_w, img_h, "AllSky")
         self.canvas.itemconfig(self.all_img_id, image=self.img_all)
         self.img_rad = self.load_scale(self.path_radar, img_w, img_h, "Radar")
         self.canvas.itemconfig(self.rad_img_id, image=self.img_rad)
         self.img_clk = self.load_scale(self.path_clock, clk_w, clk_h, "ClearSky")
         self.canvas.itemconfig(self.clk_img_id, image=self.img_clk)
-
         net_stat, net_col = self.get_connection_type()
         self.canvas.itemconfig(self.net_status_text, text=f"NET: {net_stat}", fill=net_col)
-        
         alpaca_on = self.check_alpaca_status()
         self.canvas.itemconfig(self.val_alpaca, text="ONLINE" if alpaca_on else "OFFLINE", fill="#00FF00" if alpaca_on else "#FF3333")
-
         if os.path.exists(self.path_hours):
             try:
                 mtime = os.path.getmtime(self.path_hours)
@@ -369,7 +348,6 @@ class SumnerHUD:
                     except:
                         self.canvas.itemconfig(self.val_hrs, text=f"{val} HRS")
             except: pass
-
         if os.path.exists(self.path_sensors):
             try:
                 sky_t, amb_t, hum_val, wind_val = None, None, None, None
@@ -379,7 +357,6 @@ class SumnerHUD:
                         u_line = line.upper().strip()
                         if ":" not in u_line: continue
                         val = line.split(":", 1)[-1].strip()
-                        
                         if "SKY TEMP" in u_line: 
                             display_val = "--" if "ORD-SUN" in val.upper() else val
                             self.canvas.itemconfig(self.val_sky, text=display_val)
@@ -401,27 +378,27 @@ class SumnerHUD:
                             except: self.canvas.itemconfig(self.val_pres, text=val)
                         elif "WIND" in u_line: 
                             self.canvas.itemconfig(self.val_wind, text=val)
-                            try: 
-                                wind_val = float(''.join(c for c in val if c in '0123456789.-'))
+                            try: wind_val = float(''.join(c for c in val if c in '0123456789.-'))
                             except: pass
                         elif "RAIN" in u_line or "PRECIP" in u_line: 
                             is_wet = "WET" in val.upper()
                             self.canvas.itemconfig(self.val_rain, text=val, fill="red" if is_wet else "cyan")
+                        # --- ADDED HEATER PARSER ---
+                        elif "HEATER" in u_line:
+                            h_on = "ON" in val.upper()
+                            self.canvas.itemconfig(self.val_heat, text=val, fill="#FF5733" if h_on else "cyan")
 
                 delta = (amb_t - sky_t) if (amb_t is not None and sky_t is not None) else 0
                 is_clear = delta > self.cloud_threshold
                 self.canvas.itemconfig(self.val_cloud, text="CLEAR" if is_clear else "CLOUDY", fill="lightgreen" if is_clear else "orange")
-                
                 dew_f = 0
                 if amb_t is not None and hum_val is not None:
                     T = (amb_t - 32) * 5/9
                     gamma = (math.log(hum_val/100) + ((17.27 * T) / (237.3 + T)))
                     dew_f = ((237.3 * gamma) / (17.27 - gamma) * 9/5) + 32
                     self.canvas.itemconfig(self.val_dew, text=f"{dew_f:.1f} F")
-
                 extreme_dew = (amb_t - dew_f) < 3 if amb_t is not None else False
                 wind_safe = wind_val < 15 if wind_val is not None else False
-                
                 if is_clear and not is_wet and wind_safe and not extreme_dew:
                     roof_text = "SAFE TO OPEN"
                     roof_color = "lightgreen"
@@ -433,15 +410,10 @@ class SumnerHUD:
                     if extreme_dew: reasons.append("DEW")
                     roof_text = f"UNSAFE: {', '.join(reasons)}" if reasons else "UNSAFE"
                     roof_color = "red"
-                    
                     if is_wet or (wind_val is not None and wind_val > 20):
-                        with open(self.path_roof_cmd, "w") as f:
-                            f.write("CLOSE")
-
+                        with open(self.path_roof_cmd, "w") as f: f.write("CLOSE")
                 self.canvas.itemconfig(self.val_dome, text=roof_text, fill=roof_color)
-
             except Exception: pass
-
         self.root.after(1000, self.update_loop)
 
 if __name__ == "__main__":
