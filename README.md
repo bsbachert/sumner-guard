@@ -2,7 +2,7 @@
 <img width="1918" height="926" alt="Screenshot 2026-03-01 194741" src="https://github.com/user-attachments/assets/e9ecd347-c0c8-4405-b138-a200be36ab67" />
 
 
-An integrated automation and monitoring suite for a remote Seestar S50 observatory, powered by a Raspberry Pi 5 (4GB). This system manages everything from proactive dew prevention to structural roof automation, ensuring the telescope is protected and accessible from anywhere in the world.
+An integrated automation and monitoring suite for a remote Seestar S50 / S30 / S30 Pro observatory, powered by a Raspberry Pi 5 (4GB). This system manages everything from proactive dew prevention to structural roof automation, ensuring the telescope is protected and accessible from anywhere in the world.
 
 🔭 Project Overview
 This software provides a centralized "Heads Up Display" (HUD) and a background worker system. The Pi 5 is mounted directly inside the AllSky camera housing, which is secured to the observatory structure. The system is designed for high-availability, capable of running on Solar or Grid power, requiring only a WiFi internet connection for global remote access.
