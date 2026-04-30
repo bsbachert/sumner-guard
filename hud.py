@@ -29,7 +29,6 @@ class SumnerHUD:
         self.path_email = "/home/pi/allsky_guard/email_receiver.txt"
         self.email_receiver = "bsbachert@gmail.com"
         
-        # Load custom receiver if exists
         if os.path.exists(self.path_email):
             try:
                 with open(self.path_email, "r") as f:
@@ -59,12 +58,11 @@ class SumnerHUD:
         self.seestar_ip = "0.0.0.0"
         self.last_allsky_ts = 0
         
-        # --- TRACKERS ---
         self.last_roof_safety_state = None
         self.emergency_sent = False
         self.dusk_sent_today = None
         
-        # --- AI TUNING DEFAULTS ---
+        # --- AI TUNING ---
         self.ai_brightness_trigger = 60.0
         self.ai_color_trigger = 7.0
         self.star_threshold = 18
@@ -94,10 +92,7 @@ class SumnerHUD:
         self.draw_stars()
         self.create_ui_elements()
         self.check_cleaning_reminder()
-        
-        # Notify of Power Recovery on Startup
         self.send_email_notification("System Power Recovery", "The Observatory HUD has restarted successfully.")
-        
         self.update_loop()
 
     def send_email_notification(self, subject, body):
@@ -112,11 +107,10 @@ class SumnerHUD:
             server.login(self.email_sender, self.email_pass)
             server.send_message(msg)
             server.quit()
-        except Exception as e:
-            print(f"Email Error: {e}")
+        except Exception as e: print(f"Email Error: {e}")
 
-    def run_ai_clear_check(self):
-        """Dusk-to-Dawn AI logic: Only runs when camera is on and sky is dark."""
+    def run_ai_clear_check(self, manual_click=False):
+        """Centered Circular Mask with a Linear Left Cutoff for Trees."""
         if not os.path.exists(self.path_allsky):
             self.btn_ai.config(text="NO IMAGE", bg="#555")
             return
@@ -124,64 +118,77 @@ class SumnerHUD:
         try:
             img = cv2.imread(self.path_allsky)
             if img is None: return
+            
+            h, w = img.shape[:2]
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            avg_brightness = np.mean(gray)
-
-            # --- DAYTIME / CAMERA OFF SHIELD ---
-            if avg_brightness > self.ai_brightness_trigger:
+            
+            if np.mean(gray) > self.ai_brightness_trigger:
                 self.btn_ai.config(text="DAYTIME / OFF", bg="#222")
                 return
 
-            # --- NIGHTTIME STAR & CLOUD ANALYSIS ---
+            # --- MASK CREATION ---
+            mask = np.zeros((h, w), dtype=np.uint8)
+            cx, cy = int(w / 2), int(h / 2)
+            
+            # Base Sky Circle (38% radius)
+            radius = int(h * 0.38)
+            cv2.circle(mask, (cx, cy), radius, 255, -1)
+
+            # THE CUTOFF: Remove the left ~25% of the circle area
+            # Adjusted X boundary to shave off branches
+            cutoff_x = int(cx - (radius * 0.50)) 
+            cv2.rectangle(mask, (0, 0), (cutoff_x, h), 0, -1)
+
+            masked_gray = cv2.bitwise_and(gray, gray, mask=mask)
+
+            # Detect Blobs (Clouds)
             b_params = cv2.SimpleBlobDetector_Params()
             b_params.filterByArea = True
             b_params.minArea = 400 
-            b_params.maxArea = 100000
             blob_detector = cv2.SimpleBlobDetector_create(b_params)
-            blobs = blob_detector.detect(gray)
+            blobs = blob_detector.detect(masked_gray)
             blob_count = len(blobs)
 
-            # --- TIGHTENED STAR ANALYSIS ---
+            # Detect Stars
             s_params = cv2.SimpleBlobDetector_Params()
-            s_params.filterByArea = True
-            s_params.minArea = 12          # Increased from 5 to ignore hot pixels
-            s_params.maxArea = 100         # Keep a reasonable upper limit
-            
-            s_params.filterByCircularity = True
-            s_params.minCircularity = 0.8  # Increased from 0.7 to ignore reflections/streaks
-            
+            s_params.filterByArea, s_params.minArea, s_params.maxArea = True, 10, 150
+            s_params.filterByCircularity, s_params.minCircularity = True, 0.8  
             star_detector = cv2.SimpleBlobDetector_create(s_params)
-            stars = star_detector.detect(gray)
+            stars = star_detector.detect(masked_gray)
             star_count = len(stars)
 
-            # --- DECISION LOGIC ---
-            if star_count >= self.star_threshold and blob_count < 8:
+            # Debug Output
+            debug_path = "/tmp/star_debug.jpg"
+            debug_img = img.copy()
+            # Draw yellow circle and red cutoff line
+            cv2.circle(debug_img, (cx, cy), radius, (0, 255, 255), 2)
+            cv2.line(debug_img, (cutoff_x, cy - radius), (cutoff_x, cy + radius), (0, 0, 255), 3)
+            
+            for s in stars:
+                cv2.circle(debug_img, (int(s.pt[0]), int(s.pt[1])), 15, (0, 0, 255), 2)
+            cv2.imwrite(debug_path, debug_img)
+
+            if star_count >= self.star_threshold and blob_count < 2:
                 status, color = "AI CLEAR", "#1E8449"
-            elif blob_count <= 20:
+            elif blob_count <= 4:
                 status, color = "SOME CLOUDS", "#D4AC0D"
             else:
                 status, color = "AI CLOUDY", "#922B21"
 
-            # Combine status and counts with a newline for the button
             self.btn_ai.config(text=f"{status}\n(S:{star_count} B:{blob_count})", bg=color)
+            if manual_click: self.popout(debug_path)
             
         except Exception as e:
             self.btn_ai.config(text="AI ERROR", bg="#555")
             print(f"AI Check Error: {e}")
 
-    def update_ai_bright(self, val):
-        self.ai_brightness_trigger = float(val)
-
-    def update_ai_color(self, val):
-        self.ai_color_trigger = float(val)
+    def update_ai_bright(self, val): self.ai_brightness_trigger = float(val)
+    def update_ai_color(self, val): self.ai_color_trigger = float(val)
 
     def open_browser(self):
         url = "http://localhost:5432"
-        cmd = ["/usr/bin/chromium", f"--app={url}", f"--window-size={int(self.sw*0.75)},{int(self.sh*0.85)}", "--window-position=20,80"]
-        try:
-            subprocess.Popen(cmd)
-        except:
-            subprocess.Popen(["x-www-browser", url])
+        try: subprocess.Popen(["/usr/bin/chromium", f"--app={url}", f"--window-size={int(self.sw*0.75)},{int(self.sh*0.85)}", "--window-position=20,80"])
+        except: subprocess.Popen(["x-www-browser", url])
 
     def manual_open(self):
         with open(self.path_roof_cmd, "w") as f: f.write("OPEN")
@@ -192,13 +199,11 @@ class SumnerHUD:
         messagebox.showinfo("ROOF", "Manual CLOSE command sent.")
 
     def trigger_fingerbot(self):
-        cmd = "python3 /home/pi/allsky_guard/seestar_push.py"
         try:
-            subprocess.Popen(cmd.split())
+            subprocess.Popen(["python3", "/home/pi/allsky_guard/seestar_push.py"])
             self.power_btn.config(bg="red", text="⚡ SENDING...")
             self.root.after(2000, lambda: self.power_btn.config(bg="#900", text="⚡ SEESTAR"))
-        except:
-            messagebox.showerror("ERROR", "Could not run seestar_push.py")
+        except: messagebox.showerror("ERROR", "Could not run seestar_push.py")
 
     def run_health_check(self):
         report = []
@@ -249,14 +254,12 @@ class SumnerHUD:
         self.btn_open = tk.Button(self.root, text="OPEN ROOF", bg="#1E8449", fg="white", font=("Arial", 9, "bold"), command=self.manual_open)
         self.btn_open.place(x=radar_center_x - 180, y=50, width=100, height=40)
 
-        # WIDER AI BUTTON WITH SPACE FOR TWO LINES OF TEXT
-        self.btn_ai = tk.Button(self.root, text="AI CHECKING", bg="#6C3483", fg="white", font=("Arial", 8, "bold"), command=self.run_ai_clear_check)
+        self.btn_ai = tk.Button(self.root, text="AI CHECKING", bg="#6C3483", fg="white", font=("Arial", 8, "bold"), command=lambda: self.run_ai_clear_check(manual_click=True))
         self.btn_ai.place(x=radar_center_x - 65, y=50, width=130, height=40)
 
         self.btn_close = tk.Button(self.root, text="CLOSE ROOF", bg="#922B21", fg="white", font=("Arial", 9, "bold"), command=self.manual_close)
         self.btn_close.place(x=radar_center_x + 80, y=50, width=100, height=40)
 
-        # --- AI ADJUSTMENT SLIDERS ---
         self.canvas.create_text(radar_center_x - 110, 110, text="BRIGHT:", fill="white", font=("Arial", 8, "bold"))
         self.ai_bright_slider = tk.Scale(self.root, from_=10, to=200, orient='horizontal', bg='black', fg='white', troughcolor='#333', length=80, highlightthickness=0, font=("Arial", 7), command=self.update_ai_bright)
         self.ai_bright_slider.set(self.ai_brightness_trigger)
@@ -327,7 +330,7 @@ class SumnerHUD:
         img = Image.open(path)
         if "latest.jpg" in path.lower():
             img.thumbnail((int(self.sw * 0.95), int(self.sh * 0.95)), Image.Resampling.LANCZOS)
-        elif "radar" in path.lower():
+        elif "radar" in path.lower() or "star_debug" in path.lower():
             new_h = int(self.sh * 0.88); ratio = new_h / float(img.size[1]);
             new_w = int(float(img.size[0]) * ratio)
             img = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
@@ -340,8 +343,7 @@ class SumnerHUD:
         d_win = tk.Toplevel(self.root)
         d_win.geometry(f"{int(self.sw * 0.45)}x{int(self.sh * 0.85)}")
         d_win.config(bg="#050505"); d_win.attributes("-topmost", True)
-        d_win.grid_rowconfigure(2, weight=1);
-        d_win.grid_columnconfigure(0, weight=1)
+        d_win.grid_rowconfigure(2, weight=1); d_win.grid_columnconfigure(0, weight=1)
         tk.Label(d_win, text="SYSTEM DOSSIER", bg="#050505", fg="#FFCC00", font=("Arial", 18, "bold")).grid(row=0, column=0, pady=10)
         
         entry_frame = tk.Frame(d_win, bg="#050505")
@@ -391,7 +393,6 @@ class SumnerHUD:
         tk.Button(btn_f, text="🔄 SYNC", bg="#4B0082", fg="white", command=lambda: subprocess.Popen(["python3", self.path_sync_script])).pack(side="left", padx=5)
         tk.Button(btn_f, text="🤖 TEST BOT", bg="orange", command=self.trigger_fingerbot).pack(side="left", padx=5)
         
-        # Star Threshold Slider
         tk.Label(btn_f, text="STARS:", bg="#050505", fg="white", font=("Arial", 8)).pack(side="left", padx=(10, 2))
         star_slider = tk.Scale(btn_f, from_=5, to=100, orient='horizontal', bg='#050505', fg='white', troughcolor='#333', length=80, highlightthickness=0, font=("Arial", 7))
         star_slider.set(self.star_threshold)
@@ -404,8 +405,7 @@ class SumnerHUD:
             try:
                 with open(self.path_hours, "r") as f:
                     hrs = float(f.read().strip())
-                    if hrs >= 1000.0:
-                        messagebox.showwarning("MAINTENANCE", f"Alert: {hrs:.1f} Hours. Clean dome.")
+                    if hrs >= 1000.0: messagebox.showwarning("MAINTENANCE", f"Alert: {hrs:.1f} Hours. Clean dome.")
             except: pass
 
     def draw_stars(self):
@@ -516,7 +516,6 @@ class SumnerHUD:
 
                 self.canvas.itemconfig(self.val_dome, text=roof_text, fill=roof_color)
 
-                # Notifications & Emergency logic
                 now = datetime.now()
                 if now.hour == 18 and now.minute == 0:
                     if self.dusk_sent_today != now.day:
@@ -527,7 +526,7 @@ class SumnerHUD:
                     with open(self.path_roof_cmd, "w") as f: f.write("CLOSE")
                     if self.last_roof_safety_state == "SAFE TO OPEN" and not self.emergency_sent:
                         reason = "RAIN" if is_wet else f"HIGH WIND ({wind_val} mph)"
-                        self.send_email_notification("EMERGENCY ROOF CLOSE", f"The roof was forced CLOSED due to detected {reason}.")
+                        self.send_email_notification("EMERGENCY ROOF CLOSE", f"The roof was forced CLOSED due to detected {reason}.\n\n{sensor_report}")
                         self.emergency_sent = True
                 else:
                     self.emergency_sent = False
